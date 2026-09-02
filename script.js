@@ -1,171 +1,286 @@
-/* =========================================
+/* =========================================================
    EngiCalc 2.0
    Dashboard JavaScript
-========================================= */
+   Calculate. Solve. Understand.
+========================================================= */
 
-
-/* THEME */
-
-const themeToggle = document.getElementById("themeToggle");
-
-const savedTheme = localStorage.getItem("engicalc-theme");
-
-if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-    themeToggle.textContent = "☀️";
-}
-
-
-themeToggle.addEventListener("click", function () {
-
-    document.body.classList.toggle("dark");
-
-    const darkMode =
-        document.body.classList.contains("dark");
-
-    localStorage.setItem(
-        "engicalc-theme",
-        darkMode ? "dark" : "light"
-    );
-
-    themeToggle.textContent =
-        darkMode ? "☀️" : "🌙";
-
+document.addEventListener("DOMContentLoaded", () => {
+    initTheme();
+    updateToolCount();
+    setupNavigation();
+    setupScrollEffects();
 });
 
 
-/* SCROLL TO TOOLS */
+/* =========================================================
+   CALCULATOR PAGE ROUTES
+========================================================= */
 
-function scrollToTools() {
+const calculatorPages = {
+    matrix: "calculators/matrix.html",
+    vector: "calculators/vector.html",
+    complex: "calculators/complex.html",
+    ohms: "calculators/ohms-law.html",
+    kirchhoff: "calculators/kirchhoff.html",
+    projectile: "calculators/projectile.html",
+    converter: "calculators/unit-converter.html",
+    statistics: "calculators/statistics.html",
+    constants: "reference/constants.html"
+};
 
-    const tools = document.getElementById("tools");
 
-    if (tools) {
-        tools.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
+/* =========================================================
+   OPEN TOOL
+========================================================= */
+
+function openTool(tool) {
+
+    if (!tool) return;
+
+    const page = calculatorPages[tool];
+
+    if (page) {
+        window.location.href = page;
+        return;
     }
 
+    console.warn("Calculator page not found:", tool);
 }
 
 
-/* HOME */
+/* =========================================================
+   THEME SYSTEM
+========================================================= */
 
-function goHome() {
+function initTheme() {
+
+    const savedTheme = localStorage.getItem("engicalc-theme");
+
+    if (savedTheme === "light") {
+        document.body.classList.add("light-mode");
+    }
+
+    updateThemeButton();
+}
+
+
+function toggleTheme() {
+
+    document.body.classList.toggle("light-mode");
+
+    const isLight =
+        document.body.classList.contains("light-mode");
+
+    localStorage.setItem(
+        "engicalc-theme",
+        isLight ? "light" : "dark"
+    );
+
+    updateThemeButton();
+}
+
+
+function updateThemeButton() {
+
+    const buttons = document.querySelectorAll(
+        "#themeToggle, .theme-toggle"
+    );
+
+    const isLight =
+        document.body.classList.contains("light-mode");
+
+    buttons.forEach(button => {
+
+        button.innerHTML = isLight
+            ? "☀️"
+            : "🌙";
+
+        button.setAttribute(
+            "aria-label",
+            isLight
+                ? "Switch to dark mode"
+                : "Switch to light mode"
+        );
+    });
+}
+
+
+/* =========================================================
+   NAVIGATION
+========================================================= */
+
+function setupNavigation() {
+
+    const navLinks =
+        document.querySelectorAll(
+            ".nav-link, .bottom-nav a"
+        );
+
+    navLinks.forEach(link => {
+
+        link.addEventListener("click", function () {
+
+            navLinks.forEach(item => {
+                item.classList.remove("active");
+            });
+
+            this.classList.add("active");
+        });
+
+    });
+}
+
+
+/* =========================================================
+   SCROLL EFFECTS
+========================================================= */
+
+function setupScrollEffects() {
+
+    const header =
+        document.querySelector("header");
+
+    if (!header) return;
+
+    window.addEventListener("scroll", () => {
+
+        if (window.scrollY > 20) {
+            header.classList.add("scrolled");
+        } else {
+            header.classList.remove("scrolled");
+        }
+
+    });
+}
+
+
+/* =========================================================
+   TOOL COUNT
+========================================================= */
+
+function updateToolCount() {
+
+    const count =
+        Object.keys(calculatorPages).length;
+
+    const elements =
+        document.querySelectorAll(
+            ".tool-count, #toolCount"
+        );
+
+    elements.forEach(element => {
+        element.textContent = count;
+    });
+}
+
+
+/* =========================================================
+   DASHBOARD SEARCH
+========================================================= */
+
+function searchTools() {
+
+    const input =
+        document.getElementById("toolSearch");
+
+    if (!input) return;
+
+    const query =
+        input.value.toLowerCase().trim();
+
+    const cards =
+        document.querySelectorAll(
+            ".tool-card"
+        );
+
+    cards.forEach(card => {
+
+        const text =
+            card.textContent.toLowerCase();
+
+        card.style.display =
+            text.includes(query)
+                ? ""
+                : "none";
+    });
+}
+
+
+/* =========================================================
+   SMOOTH SCROLL
+========================================================= */
+
+function scrollToTools() {
+
+    const section =
+        document.getElementById("tools");
+
+    if (section) {
+
+        section.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+}
+
+
+/* =========================================================
+   BACK TO TOP
+========================================================= */
+
+function backToTop() {
 
     window.scrollTo({
         top: 0,
         behavior: "smooth"
     });
-
 }
 
 
-/* TOOL MODAL */
+/* =========================================================
+   PREVENT DOUBLE CLICK
+========================================================= */
 
-const modal =
-    document.getElementById("toolModal");
+document.addEventListener(
+    "click",
+    event => {
 
-const modalTitle =
-    document.getElementById("modalTitle");
+        const button =
+            event.target.closest(
+                ".tool-card button"
+            );
 
+        if (!button) return;
 
-function openTool(toolName) {
+        button.classList.add("clicked");
 
-    modalTitle.textContent = toolName;
+        setTimeout(() => {
+            button.classList.remove("clicked");
+        }, 300);
 
-    modal.classList.add("show");
-
-    modal.setAttribute("aria-hidden", "false");
-
-    document.body.style.overflow = "hidden";
-
-}
-
-
-function showComingSoon(name) {
-
-    modalTitle.textContent = name;
-
-    modal.classList.add("show");
-
-    modal.setAttribute("aria-hidden", "false");
-
-    document.body.style.overflow = "hidden";
-
-}
-
-
-function closeModal() {
-
-    modal.classList.remove("show");
-
-    modal.setAttribute("aria-hidden", "true");
-
-    document.body.style.overflow = "";
-
-}
-
-
-/* CLOSE WHEN CLICKING OUTSIDE */
-
-modal.addEventListener("click", function (event) {
-
-    if (event.target === modal) {
-        closeModal();
     }
+);
 
-});
 
+/* =========================================================
+   GLOBAL ESCAPE KEY
+========================================================= */
 
-/* ESCAPE KEY */
+document.addEventListener(
+    "keydown",
+    event => {
 
-document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
 
-    if (event.key === "Escape") {
-        closeModal();
+            const modal =
+                document.querySelector(".modal");
+
+            if (modal) {
+                modal.classList.remove("show");
+            }
+
+        }
+
     }
-
-});
-
-
-/* ACTIVE MOBILE NAV */
-
-const navItems =
-    document.querySelectorAll(".nav-item");
-
-
-navItems.forEach(function (item) {
-
-    item.addEventListener("click", function () {
-
-        navItems.forEach(function (nav) {
-            nav.classList.remove("active");
-        });
-
-        item.classList.add("active");
-
-    });
-
-});
-
-
-/* UPDATE TOOL COUNT */
-
-const toolCount =
-    document.getElementById("toolCount");
-
-const totalTools =
-    document.querySelectorAll(".tool-card").length;
-
-if (toolCount) {
-    toolCount.textContent = totalTools;
-}
-
-
-/* PAGE READY */
-
-console.log(
-    "EngiCalc 2.0 Dashboard loaded successfully."
 );
