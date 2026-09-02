@@ -1,286 +1,576 @@
-/* =========================================================
+/* =====================================================
    EngiCalc 2.0
    Dashboard JavaScript
-   Calculate. Solve. Understand.
-========================================================= */
-
-document.addEventListener("DOMContentLoaded", () => {
-    initTheme();
-    updateToolCount();
-    setupNavigation();
-    setupScrollEffects();
-});
+===================================================== */
 
 
-/* =========================================================
-   CALCULATOR PAGE ROUTES
-========================================================= */
+/* =====================================================
+   CALCULATOR ROUTES
+===================================================== */
 
 const calculatorPages = {
-    matrix: "calculators/matrix.html",
-    vector: "calculators/vector.html",
-    complex: "calculators/complex.html",
-    ohms: "calculators/ohms-law.html",
-    kirchhoff: "calculators/kirchhoff.html",
-    projectile: "calculators/projectile.html",
-    converter: "calculators/unit-converter.html",
-    statistics: "calculators/statistics.html",
-    constants: "reference/constants.html"
+
+    matrix:
+        "calculators/matrix.html",
+
+    vector:
+        "calculators/vector.html",
+
+    complex:
+        "calculators/complex.html",
+
+    ohms:
+        "calculators/ohms-law.html",
+
+    kirchhoff:
+        "calculators/kirchhoff.html",
+
+    projectile:
+        "calculators/projectile.html",
+
+    converter:
+        "calculators/unit-converter.html",
+
+    statistics:
+        "calculators/statistics.html",
+
+    constants:
+        "reference/constants.html"
 };
 
 
-/* =========================================================
-   OPEN TOOL
-========================================================= */
+/* =====================================================
+   PAGE LOAD
+===================================================== */
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        initTheme();
+
+        updateToolCount();
+
+        setupScrollEffects();
+
+        setupActiveNavigation();
+
+        setupSearch();
+
+    }
+);
+
+
+/* =====================================================
+   OPEN CALCULATOR
+===================================================== */
 
 function openTool(tool) {
 
-    if (!tool) return;
+    const page =
+        calculatorPages[tool];
 
-    const page = calculatorPages[tool];
+    if (!page) {
 
-    if (page) {
-        window.location.href = page;
+        console.error(
+            "Calculator not found:",
+            tool
+        );
+
         return;
     }
 
-    console.warn("Calculator page not found:", tool);
+    window.location.href = page;
 }
 
 
-/* =========================================================
-   THEME SYSTEM
-========================================================= */
+/* =====================================================
+   THEME
+===================================================== */
 
 function initTheme() {
 
-    const savedTheme = localStorage.getItem("engicalc-theme");
+    const savedTheme =
+        localStorage.getItem(
+            "engicalc-theme"
+        );
 
     if (savedTheme === "light") {
-        document.body.classList.add("light-mode");
+
+        document.body.classList.add(
+            "light-mode"
+        );
+
     }
 
-    updateThemeButton();
+    updateThemeIcons();
 }
 
 
 function toggleTheme() {
 
-    document.body.classList.toggle("light-mode");
+    document.body.classList.toggle(
+        "light-mode"
+    );
 
-    const isLight =
-        document.body.classList.contains("light-mode");
+    const lightMode =
+        document.body.classList.contains(
+            "light-mode"
+        );
 
     localStorage.setItem(
         "engicalc-theme",
-        isLight ? "light" : "dark"
+        lightMode
+            ? "light"
+            : "dark"
     );
 
-    updateThemeButton();
+    updateThemeIcons();
 }
 
 
-function updateThemeButton() {
+function updateThemeIcons() {
 
-    const buttons = document.querySelectorAll(
-        "#themeToggle, .theme-toggle"
-    );
+    const lightMode =
+        document.body.classList.contains(
+            "light-mode"
+        );
 
-    const isLight =
-        document.body.classList.contains("light-mode");
-
-    buttons.forEach(button => {
-
-        button.innerHTML = isLight
+    const icon =
+        lightMode
             ? "☀️"
             : "🌙";
 
-        button.setAttribute(
-            "aria-label",
-            isLight
-                ? "Switch to dark mode"
-                : "Switch to light mode"
-        );
-    });
-}
 
-
-/* =========================================================
-   NAVIGATION
-========================================================= */
-
-function setupNavigation() {
-
-    const navLinks =
-        document.querySelectorAll(
-            ".nav-link, .bottom-nav a"
+    const desktopButton =
+        document.getElementById(
+            "themeToggle"
         );
 
-    navLinks.forEach(link => {
+    const mobileButton =
+        document.getElementById(
+            "mobileThemeToggle"
+        );
 
-        link.addEventListener("click", function () {
+    const bottomIcon =
+        document.getElementById(
+            "bottomThemeIcon"
+        );
 
-            navLinks.forEach(item => {
-                item.classList.remove("active");
-            });
 
-            this.classList.add("active");
-        });
+    if (desktopButton) {
 
-    });
+        desktopButton.textContent =
+            icon;
+    }
+
+
+    if (mobileButton) {
+
+        mobileButton.textContent =
+            icon;
+    }
+
+
+    if (bottomIcon) {
+
+        bottomIcon.textContent =
+            icon;
+    }
+
 }
 
 
-/* =========================================================
-   SCROLL EFFECTS
-========================================================= */
-
-function setupScrollEffects() {
-
-    const header =
-        document.querySelector("header");
-
-    if (!header) return;
-
-    window.addEventListener("scroll", () => {
-
-        if (window.scrollY > 20) {
-            header.classList.add("scrolled");
-        } else {
-            header.classList.remove("scrolled");
-        }
-
-    });
-}
-
-
-/* =========================================================
+/* =====================================================
    TOOL COUNT
-========================================================= */
+===================================================== */
 
 function updateToolCount() {
 
     const count =
-        Object.keys(calculatorPages).length;
+        Object.keys(
+            calculatorPages
+        ).length;
 
-    const elements =
-        document.querySelectorAll(
-            ".tool-count, #toolCount"
+    document
+        .querySelectorAll(
+            ".tool-count"
+        )
+        .forEach(
+            element => {
+                element.textContent =
+                    count;
+            }
         );
 
-    elements.forEach(element => {
-        element.textContent = count;
-    });
 }
 
 
-/* =========================================================
-   DASHBOARD SEARCH
-========================================================= */
+/* =====================================================
+   SEARCH
+===================================================== */
+
+function setupSearch() {
+
+    const input =
+        document.getElementById(
+            "toolSearch"
+        );
+
+    if (!input) return;
+
+    input.addEventListener(
+        "input",
+        searchTools
+    );
+}
+
 
 function searchTools() {
 
     const input =
-        document.getElementById("toolSearch");
+        document.getElementById(
+            "toolSearch"
+        );
 
     if (!input) return;
 
+
     const query =
-        input.value.toLowerCase().trim();
+        input.value
+            .toLowerCase()
+            .trim();
+
 
     const cards =
         document.querySelectorAll(
             ".tool-card"
         );
 
-    cards.forEach(card => {
 
-        const text =
-            card.textContent.toLowerCase();
+    let visibleCount = 0;
 
-        card.style.display =
-            text.includes(query)
-                ? ""
+
+    cards.forEach(
+        card => {
+
+            const text =
+                card.textContent
+                    .toLowerCase();
+
+
+            if (
+                text.includes(query)
+            ) {
+
+                card.style.display =
+                    "";
+
+                visibleCount++;
+
+            } else {
+
+                card.style.display =
+                    "none";
+
+            }
+
+        }
+    );
+
+
+    const noResults =
+        document.getElementById(
+            "noResults"
+        );
+
+
+    if (noResults) {
+
+        noResults.style.display =
+            visibleCount === 0
+                ? "block"
                 : "none";
-    });
+    }
+
 }
 
 
-/* =========================================================
+/* =====================================================
    SMOOTH SCROLL
-========================================================= */
+===================================================== */
 
 function scrollToTools() {
 
     const section =
-        document.getElementById("tools");
+        document.getElementById(
+            "calculators"
+        );
 
-    if (section) {
+    if (!section) return;
 
-        section.scrollIntoView({
-            behavior: "smooth"
-        });
+    section.scrollIntoView({
+        behavior: "smooth"
+    });
 
-    }
 }
 
 
-/* =========================================================
+/* =====================================================
    BACK TO TOP
-========================================================= */
+===================================================== */
 
 function backToTop() {
 
     window.scrollTo({
+
         top: 0,
+
         behavior: "smooth"
+
     });
+
 }
 
 
-/* =========================================================
-   PREVENT DOUBLE CLICK
-========================================================= */
+/* =====================================================
+   HEADER SCROLL EFFECT
+===================================================== */
 
-document.addEventListener(
-    "click",
-    event => {
+function setupScrollEffects() {
 
-        const button =
-            event.target.closest(
-                ".tool-card button"
+    const header =
+        document.querySelector(
+            ".top-header"
+        );
+
+    if (!header) return;
+
+
+    function checkScroll() {
+
+        if (window.scrollY > 20) {
+
+            header.classList.add(
+                "scrolled"
             );
 
-        if (!button) return;
+        } else {
 
-        button.classList.add("clicked");
+            header.classList.remove(
+                "scrolled"
+            );
 
-        setTimeout(() => {
-            button.classList.remove("clicked");
-        }, 300);
+        }
+
+    }
+
+
+    window.addEventListener(
+        "scroll",
+        checkScroll
+    );
+
+    checkScroll();
+}
+
+
+/* =====================================================
+   ACTIVE NAVIGATION
+===================================================== */
+
+function setupActiveNavigation() {
+
+    const links =
+        document.querySelectorAll(
+            ".nav-link, .bottom-nav-item"
+        );
+
+
+    links.forEach(
+        link => {
+
+            link.addEventListener(
+                "click",
+                function () {
+
+                    links.forEach(
+                        item => {
+                            item.classList.remove(
+                                "active"
+                            );
+                        }
+                    );
+
+                    this.classList.add(
+                        "active"
+                    );
+
+                }
+            );
+
+        }
+    );
+
+
+    const sections =
+        document.querySelectorAll(
+            "section[id]"
+        );
+
+
+    if (!sections.length) return;
+
+
+    const observer =
+        new IntersectionObserver(
+            entries => {
+
+                entries.forEach(
+                    entry => {
+
+                        if (
+                            entry.isIntersecting
+                        ) {
+
+                            const id =
+                                entry.target.id;
+
+
+                            links.forEach(
+                                link => {
+
+                                    const href =
+                                        link.getAttribute(
+                                            "href"
+                                        );
+
+
+                                    if (
+                                        href ===
+                                        "#" + id
+                                    ) {
+
+                                        links.forEach(
+                                            item => {
+                                                item.classList.remove(
+                                                    "active"
+                                                );
+                                            }
+                                        );
+
+                                        link.classList.add(
+                                            "active"
+                                        );
+
+                                    }
+
+                                }
+                            );
+
+                        }
+
+                    }
+                );
+
+            },
+            {
+                threshold: 0.45
+            }
+        );
+
+
+    sections.forEach(
+        section => {
+            observer.observe(
+                section
+            );
+        }
+    );
+
+}
+
+
+/* =====================================================
+   ESC KEY
+===================================================== */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key ===
+            "Escape"
+        ) {
+
+            const search =
+                document.getElementById(
+                    "toolSearch"
+                );
+
+            if (search) {
+
+                search.value = "";
+
+                searchTools();
+
+            }
+
+        }
 
     }
 );
 
 
-/* =========================================================
-   GLOBAL ESCAPE KEY
-========================================================= */
+/* =====================================================
+   BUTTON TOUCH FEEDBACK
+===================================================== */
 
 document.addEventListener(
-    "keydown",
-    event => {
+    "touchstart",
+    function (event) {
 
-        if (event.key === "Escape") {
+        const button =
+            event.target.closest(
+                "button"
+            );
 
-            const modal =
-                document.querySelector(".modal");
+        if (!button) return;
 
-            if (modal) {
-                modal.classList.remove("show");
-            }
+        button.style.transform =
+            "scale(0.98)";
 
-        }
+    },
+    {
+        passive: true
+    }
+);
 
+
+document.addEventListener(
+    "touchend",
+    function (event) {
+
+        const button =
+            event.target.closest(
+                "button"
+            );
+
+        if (!button) return;
+
+        setTimeout(
+            function () {
+
+                button.style.transform =
+                    "";
+
+            },
+            100
+        );
+
+    },
+    {
+        passive: true
     }
 );
