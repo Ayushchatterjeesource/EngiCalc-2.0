@@ -1,1 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Ohm's Law - EngiCalc 2.0</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial;background:#f5f7fb;margin:0;color:#172033}
+header{background:#111827;color:white;text-align:center;padding:18px}header a{color:white;text-decoration:none}
+header img{width:50px;vertical-align:middle}
+.container{max-width:650px;margin:25px auto;padding:15px}.card{background:white;padding:25px;border-radius:18px;box-shadow:0 5px 20px #0001}
+input,select,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
+button{background:#2563eb;color:white;border:0;font-weight:bold}.result{margin-top:15px;background:#eff6ff;padding:18px;border-radius:12px}
+</style>
+</head>
+<body>
+<header><a href="../index.html"><img src="../engicalc2.0-logo.png"> <b>EngiCalc 2.0</b></a></header>
+<div class="container"><div class="card">
+<h2>Ohm's Law Calculator</h2>
+<p>Formula: <b>V = I × R</b></p>
 
+<select id="find">
+<option value="v">Find Voltage (V)</option>
+<option value="i">Find Current (I)</option>
+<option value="r">Find Resistance (R)</option>
+</select>
+
+<input id="x" type="number" placeholder="Value 1">
+<input id="y" type="number" placeholder="Value 2">
+
+<button onclick="calculate()">Calculate</button>
+<div id="result"></div>
+</div></div>
+
+<script>
+function calculate(){
+let f=document.getElementById("find").value;
+let x=+document.getElementById("x").value;
+let y=+document.getElementById("y").value;
+let ans;
+
+if(f==="v") ans=x*y;
+if(f==="i") ans=y===0?"Undefined":x/y;
+if(f==="r") ans=y===0?"Undefined":x/y;
+
+let unit=f==="v"?"V":f==="i"?"A":"Ω";
+
+result.innerHTML=`<div class="result"><b>Result:</b> ${ans} ${unit}</div>`;
+}
+</script>
+</body>
+</html>
