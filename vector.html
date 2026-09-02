@@ -1,1 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vector Calculator - EngiCalc 2.0</title>
+<style>
+*{box-sizing:border-box}body{font-family:Arial;background:#f5f7fb;margin:0;color:#172033}
+header{background:#111827;color:white;text-align:center;padding:18px}
+header img{width:50px;vertical-align:middle;margin-right:8px}header a{color:white;text-decoration:none}
+.container{max-width:700px;margin:25px auto;padding:15px}.card{background:white;padding:25px;border-radius:18px;box-shadow:0 5px 20px #0001}
+input,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
+button{background:#2563eb;color:white;border:0;font-weight:bold}.result{margin-top:15px;background:#eff6ff;padding:18px;border-radius:12px}
+</style>
+</head>
+<body>
+<header><a href="../index.html"><img src="../engicalc2.0-logo.png"><b>EngiCalc 2.0</b></a></header>
+<div class="container"><div class="card">
+<h2>Vector Calculator</h2>
 
+<input id="ax" type="number" placeholder="Aₓ">
+<input id="ay" type="number" placeholder="Aᵧ">
+<input id="az" type="number" placeholder="A𝓏">
+
+<input id="bx" type="number" placeholder="Bₓ">
+<input id="by" type="number" placeholder="Bᵧ">
+<input id="bz" type="number" placeholder="B𝓏">
+
+<button onclick="calculate()">Calculate</button>
+<div id="result"></div>
+</div></div>
+
+<script>
+function calculate(){
+let ax=+document.getElementById("ax").value,ay=+document.getElementById("ay").value,az=+document.getElementById("az").value;
+let bx=+document.getElementById("bx").value,by=+document.getElementById("by").value,bz=+document.getElementById("bz").value;
+
+let dot=ax*bx+ay*by+az*bz;
+let cross=[
+ ay*bz-az*by,
+ az*bx-ax*bz,
+ ax*by-ay*bx
+];
+let ma=Math.sqrt(ax*ax+ay*ay+az*az);
+let mb=Math.sqrt(bx*bx+by*by+bz*bz);
+
+result.innerHTML=`<div class="result">
+<b>A + B</b> = (${ax+bx}, ${ay+by}, ${az+bz})
+
+<b>A − B</b> = (${ax-bx}, ${ay-by}, ${az-bz})
+
+<b>A · B</b> = ${dot}
+
+<b>A × B</b> = (${cross.join(", ")})
+
+<b>|A|</b> = ${ma.toFixed(4)}
+
+<b>|B|</b> = ${mb.toFixed(4)}
+</div>`;
+}
+</script>
+</body>
+</html>
