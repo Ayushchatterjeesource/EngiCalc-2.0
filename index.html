@@ -1,286 +1,598 @@
-/* =========================================================
-   EngiCalc 2.0
-   Dashboard JavaScript
-   Calculate. Solve. Understand.
-========================================================= */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
 
-document.addEventListener("DOMContentLoaded", () => {
-    initTheme();
-    updateToolCount();
-    setupNavigation();
-    setupScrollEffects();
-});
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
+    <meta name="description"
+          content="EngiCalc 2.0 - Engineering Calculator & Toolkit. Calculate, solve and understand engineering problems.">
 
-/* =========================================================
-   CALCULATOR PAGE ROUTES
-========================================================= */
+    <meta name="theme-color"
+          content="#0f172a">
 
-const calculatorPages = {
-    matrix: "calculators/matrix.html",
-    vector: "calculators/vector.html",
-    complex: "calculators/complex.html",
-    ohms: "calculators/ohms-law.html",
-    kirchhoff: "calculators/kirchhoff.html",
-    projectile: "calculators/projectile.html",
-    converter: "calculators/unit-converter.html",
-    statistics: "calculators/statistics.html",
-    constants: "reference/constants.html"
-};
+    <title>EngiCalc 2.0 — Engineering Calculator & Toolkit</title>
 
+    <link rel="stylesheet" href="style.css">
+</head>
 
-/* =========================================================
-   OPEN TOOL
-========================================================= */
+<body>
 
-function openTool(tool) {
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
-    if (!tool) return;
+<header>
 
-    const page = calculatorPages[tool];
+    <div class="header-inner">
 
-    if (page) {
-        window.location.href = page;
-        return;
-    }
+        <a href="./" class="brand">
 
-    console.warn("Calculator page not found:", tool);
-}
+            <img
+                src="engicalc2.0-logo.png"
+                alt="EngiCalc 2.0 Logo"
+                class="brand-logo"
+            >
 
+            <div class="brand-text">
+                <strong>EngiCalc 2.0</strong>
+                <span>Engineering Calculator & Toolkit</span>
+            </div>
 
-/* =========================================================
-   THEME SYSTEM
-========================================================= */
+        </a>
 
-function initTheme() {
 
-    const savedTheme = localStorage.getItem("engicalc-theme");
+        <nav class="desktop-nav">
 
-    if (savedTheme === "light") {
-        document.body.classList.add("light-mode");
-    }
+            <a href="#home" class="nav-link active">
+                Home
+            </a>
 
-    updateThemeButton();
-}
+            <a href="#tools" class="nav-link">
+                Calculators
+            </a>
 
+            <a href="#about" class="nav-link">
+                About
+            </a>
 
-function toggleTheme() {
+        </nav>
 
-    document.body.classList.toggle("light-mode");
 
-    const isLight =
-        document.body.classList.contains("light-mode");
+        <button
+            id="themeToggle"
+            class="theme-toggle"
+            onclick="toggleTheme()"
+            aria-label="Switch to light mode">
+            🌙
+        </button>
 
-    localStorage.setItem(
-        "engicalc-theme",
-        isLight ? "light" : "dark"
-    );
+    </div>
 
-    updateThemeButton();
-}
+</header>
 
 
-function updateThemeButton() {
+<!-- =====================================================
+     MAIN
+===================================================== -->
 
-    const buttons = document.querySelectorAll(
-        "#themeToggle, .theme-toggle"
-    );
+<main>
 
-    const isLight =
-        document.body.classList.contains("light-mode");
 
-    buttons.forEach(button => {
+<!-- =====================================================
+     HERO
+===================================================== -->
 
-        button.innerHTML = isLight
-            ? "☀️"
-            : "🌙";
+<section id="home" class="hero">
 
-        button.setAttribute(
-            "aria-label",
-            isLight
-                ? "Switch to dark mode"
-                : "Switch to light mode"
-        );
-    });
-}
+    <div class="hero-content">
 
+        <div class="hero-badge">
+            ⚙️ Engineering Toolkit
+        </div>
 
-/* =========================================================
-   NAVIGATION
-========================================================= */
+        <h1>
+            EngiCalc <span>2.0</span>
+        </h1>
 
-function setupNavigation() {
+        <h2>
+            Calculate. Solve. Understand.
+        </h2>
 
-    const navLinks =
-        document.querySelectorAll(
-            ".nav-link, .bottom-nav a"
-        );
+        <p>
+            A powerful engineering calculator and toolkit
+            designed to make complex calculations simple,
+            fast and understandable.
+        </p>
 
-    navLinks.forEach(link => {
+        <div class="hero-buttons">
 
-        link.addEventListener("click", function () {
+            <button
+                class="primary-button"
+                onclick="scrollToTools()">
+                Explore Calculators
+            </button>
 
-            navLinks.forEach(item => {
-                item.classList.remove("active");
-            });
+            <a
+                href="#about"
+                class="secondary-button">
+                About EngiCalc
+            </a>
 
-            this.classList.add("active");
-        });
+        </div>
 
-    });
-}
+    </div>
 
+</section>
 
-/* =========================================================
-   SCROLL EFFECTS
-========================================================= */
 
-function setupScrollEffects() {
+<!-- =====================================================
+     CALCULATORS
+===================================================== -->
 
-    const header =
-        document.querySelector("header");
+<section id="tools" class="tools-section">
 
-    if (!header) return;
+    <div class="section-heading">
 
-    window.addEventListener("scroll", () => {
+        <div>
+            <span class="section-label">
+                ENGINEERING TOOLS
+            </span>
 
-        if (window.scrollY > 20) {
-            header.classList.add("scrolled");
-        } else {
-            header.classList.remove("scrolled");
-        }
+            <h2>
+                Calculators & Toolkit
+            </h2>
 
-    });
-}
+            <p>
+                Select a tool to start calculating.
+            </p>
+        </div>
 
 
-/* =========================================================
-   TOOL COUNT
-========================================================= */
+        <div class="tool-counter">
+            <strong class="tool-count">9</strong>
+            <span>Tools</span>
+        </div>
 
-function updateToolCount() {
+    </div>
 
-    const count =
-        Object.keys(calculatorPages).length;
 
-    const elements =
-        document.querySelectorAll(
-            ".tool-count, #toolCount"
-        );
+    <!-- SEARCH -->
 
-    elements.forEach(element => {
-        element.textContent = count;
-    });
-}
+    <div class="search-box">
 
+        <span>🔍</span>
 
-/* =========================================================
-   DASHBOARD SEARCH
-========================================================= */
+        <input
+            type="search"
+            id="toolSearch"
+            placeholder="Search calculators..."
+            oninput="searchTools()">
 
-function searchTools() {
+    </div>
 
-    const input =
-        document.getElementById("toolSearch");
 
-    if (!input) return;
+    <!-- TOOL GRID -->
 
-    const query =
-        input.value.toLowerCase().trim();
+    <div class="tools-grid">
 
-    const cards =
-        document.querySelectorAll(
-            ".tool-card"
-        );
 
-    cards.forEach(card => {
+        <!-- MATRIX -->
 
-        const text =
-            card.textContent.toLowerCase();
+        <article class="tool-card">
 
-        card.style.display =
-            text.includes(query)
-                ? ""
-                : "none";
-    });
-}
+            <div class="tool-icon">
+                ∷
+            </div>
 
+            <div class="tool-info">
 
-/* =========================================================
-   SMOOTH SCROLL
-========================================================= */
+                <h3>Matrix Calculator</h3>
 
-function scrollToTools() {
+                <p>
+                    Matrix addition, subtraction,
+                    multiplication and operations.
+                </p>
 
-    const section =
-        document.getElementById("tools");
+                <span class="tool-tag">
+                    Mathematics
+                </span>
 
-    if (section) {
+            </div>
 
-        section.scrollIntoView({
-            behavior: "smooth"
-        });
+            <button
+                class="tool-card-button"
+                onclick="openTool('matrix')">
+                Open →
+            </button>
 
-    }
-}
+        </article>
 
 
-/* =========================================================
-   BACK TO TOP
-========================================================= */
+        <!-- VECTOR -->
 
-function backToTop() {
+        <article class="tool-card">
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
-}
+            <div class="tool-icon">
+                ➤
+            </div>
 
+            <div class="tool-info">
 
-/* =========================================================
-   PREVENT DOUBLE CLICK
-========================================================= */
+                <h3>Vector Calculator</h3>
 
-document.addEventListener(
-    "click",
-    event => {
+                <p>
+                    Vector addition, subtraction,
+                    dot product and cross product.
+                </p>
 
-        const button =
-            event.target.closest(
-                ".tool-card button"
-            );
+                <span class="tool-tag">
+                    Mathematics
+                </span>
 
-        if (!button) return;
+            </div>
 
-        button.classList.add("clicked");
+            <button
+                class="tool-card-button"
+                onclick="openTool('vector')">
+                Open →
+            </button>
 
-        setTimeout(() => {
-            button.classList.remove("clicked");
-        }, 300);
+        </article>
 
-    }
-);
 
+        <!-- COMPLEX -->
 
-/* =========================================================
-   GLOBAL ESCAPE KEY
-========================================================= */
+        <article class="tool-card">
 
-document.addEventListener(
-    "keydown",
-    event => {
+            <div class="tool-icon">
+                i
+            </div>
 
-        if (event.key === "Escape") {
+            <div class="tool-info">
 
-            const modal =
-                document.querySelector(".modal");
+                <h3>Complex Number</h3>
 
-            if (modal) {
-                modal.classList.remove("show");
-            }
+                <p>
+                    Perform operations with complex
+                    numbers quickly and easily.
+                </p>
 
-        }
+                <span class="tool-tag">
+                    Mathematics
+                </span>
 
-    }
-);
+            </div>
+
+            <button
+                class="tool-card-button"
+                onclick="openTool('complex')">
+                Open →
+            </button>
+
+        </article>
+
+
+        <!-- OHMS LAW -->
+
+        <article class="tool-card">
+
+            <div class="tool-icon">
+                Ω
+            </div>
+
+            <div class="tool-info">
+
+                <h3>Ohm's Law</h3>
+
+                <p>
+                    Calculate voltage, current and
+                    resistance using Ohm's Law.
+                </p>
+
+                <span class="tool-tag">
+                    Electrical
+                </span>
+
+            </div>
+
+            <button
+                class="tool-card-button"
+                onclick="openTool('ohms')">
+                Open →
+            </button>
+
+        </article>
+
+
+        <!-- KIRCHHOFF -->
+
+        <article class="tool-card">
+
+            <div class="tool-icon">
+                ⚡
+            </div>
+
+            <div class="tool-info">
+
+                <h3>Kirchhoff's Law</h3>
+
+                <p>
+                    Solve basic Kirchhoff current
+                    and voltage calculations.
+                </p>
+
+                <span class="tool-tag">
+                    Electrical
+                </span>
+
+            </div>
+
+            <button
+                class="tool-card-button"
+                onclick="openTool('kirchhoff')">
+                Open →
+            </button>
+
+        </article>
+
+
+        <!-- PROJECTILE -->
+
+        <article class="tool-card">
+
+            <div class="tool-icon">
+                ↗
+            </div>
+
+            <div class="tool-info">
+
+                <h3>Projectile Motion</h3>
+
+                <p>
+                    Calculate projectile range,
+                    time, height and velocity.
+                </p>
+
+                <span class="tool-tag">
+                    Physics
+                </span>
+
+            </div>
+
+            <button
+                class="tool-card-button"
+                onclick="openTool('projectile')">
+                Open →
+            </button>
+
+        </article>
+
+
+        <!-- UNIT CONVERTER -->
+
+        <article class="tool-card">
+
+            <div class="tool-icon">
+                ⇄
+            </div>
+
+            <div class="tool-info">
+
+                <h3>Unit Converter</h3>
+
+                <p>
+                    Convert common engineering and
+                    scientific units.
+                </p>
+
+                <span class="tool-tag">
+                    Utility
+                </span>
+
+            </div>
+
+            <button
+                class="tool-card-button"
+                onclick="openTool('converter')">
+                Open →
+            </button>
+
+        </article>
+
+
+        <!-- STATISTICS -->
+
+        <article class="tool-card">
+
+            <div class="tool-icon">
+                σ
+            </div>
+
+            <div class="tool-info">
+
+                <h3>Statistics</h3>
+
+                <p>
+                    Calculate mean, median, mode,
+                    variance and standard deviation.
+                </p>
+
+                <span class="tool-tag">
+                    Mathematics
+                </span>
+
+            </div>
+
+            <button
+                class="tool-card-button"
+                onclick="openTool('statistics')">
+                Open →
+            </button>
+
+        </article>
+
+
+        <!-- CONSTANTS -->
+
+        <article class="tool-card">
+
+            <div class="tool-icon">
+                π
+            </div>
+
+            <div class="tool-info">
+
+                <h3>Engineering Constants</h3>
+
+                <p>
+                    Quick reference for important
+                    engineering and scientific constants.
+                </p>
+
+                <span class="tool-tag">
+                    Reference
+                </span>
+
+            </div>
+
+            <button
+                class="tool-card-button"
+                onclick="openTool('constants')">
+                Open →
+            </button>
+
+        </article>
+
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ABOUT
+===================================================== -->
+
+<section id="about" class="about-section">
+
+    <div class="about-card">
+
+        <span class="section-label">
+            ABOUT ENGICALC
+        </span>
+
+        <h2>
+            Engineering made simpler.
+        </h2>
+
+        <p>
+            EngiCalc 2.0 is an engineering calculator and
+            toolkit designed to help students perform
+            mathematical, electrical, physics and engineering
+            calculations quickly.
+        </p>
+
+        <p>
+            The goal is simple:
+            <strong>Calculate. Solve. Understand.</strong>
+        </p>
+
+        <div class="about-features">
+
+            <div>
+                <strong>9+</strong>
+                <span>Engineering Tools</span>
+            </div>
+
+            <div>
+                <strong>Fast</strong>
+                <span>Calculations</span>
+            </div>
+
+            <div>
+                <strong>Mobile</strong>
+                <span>Friendly</span>
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+</main>
+
+
+<!-- =====================================================
+     MOBILE NAVIGATION
+===================================================== -->
+
+<nav class="bottom-nav">
+
+    <a href="#home" class="active">
+        <span>⌂</span>
+        <small>Home</small>
+    </a>
+
+    <a href="#tools">
+        <span>⚙</span>
+        <small>Tools</small>
+    </a>
+
+    <a href="#about">
+        <span>ⓘ</span>
+        <small>About</small>
+    </a>
+
+</nav>
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+    <div class="footer-content">
+
+        <img
+            src="engicalc2.0-logo.png"
+            alt="EngiCalc 2.0"
+            class="footer-logo"
+        >
+
+        <h3>
+            EngiCalc 2.0
+        </h3>
+
+        <p>
+            This EngiCalc is made by AyushChatterjee
+        </p>
+
+        <p>
+            Founder:
+            <a href="./">
+                EngiCalc2.0.com
+            </a>
+        </p>
+
+        <p class="copyright">
+            © 2026 EngiCalc 2.0. All rights reserved.
+        </p>
+
+    </div>
+
+</footer>
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script src="script.js"></script>
+
+</body>
+</html>
