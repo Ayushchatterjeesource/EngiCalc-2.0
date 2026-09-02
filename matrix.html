@@ -1,1 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matrix Calculator - EngiCalc 2.0</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,sans-serif;background:#f5f7fb;color:#172033;padding-bottom:30px}
+header{background:#111827;color:white;padding:18px;text-align:center}
+header img{width:55px;height:55px;object-fit:contain;vertical-align:middle;margin-right:10px}
+header h1{display:inline;font-size:24px}
+.container{max-width:900px;margin:25px auto;padding:15px}
+.card{background:white;padding:22px;border-radius:18px;box-shadow:0 5px 20px #00000012;margin-bottom:20px}
+h2{margin-bottom:15px;color:#2563eb}
+input,select,button{width:100%;padding:12px;margin:6px 0;border:1px solid #d1d5db;border-radius:10px;font-size:16px}
+button{background:#2563eb;color:white;border:none;cursor:pointer;font-weight:bold}
+button:hover{background:#1d4ed8}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.matrix{display:grid;gap:8px;margin-top:15px}
+.matrix input{text-align:center}
+.result{background:#eff6ff;padding:18px;border-radius:12px;margin-top:15px;white-space:pre-wrap;font-family:monospace}
+a{color:white;text-decoration:none}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
 
+<header>
+<a href="../index.html">
+<img src="../engicalc2.0-logo.png">
+<h1>EngiCalc 2.0</h1>
+</a>
+</header>
+
+<div class="container">
+<div class="card">
+<h2>Matrix Calculator</h2>
+
+<label>Rows</label>
+<input type="number" id="rows" value="2" min="1" max="5">
+
+<label>Columns</label>
+<input type="number" id="cols" value="2" min="1" max="5">
+
+<button onclick="createMatrix()">Create Matrix</button>
+
+<div id="matrixBox"></div>
+
+<div class="grid">
+<button onclick="calculate('add')">A + B</button>
+<button onclick="calculate('sub')">A − B</button>
+<button onclick="calculate('mul')">A × B</button>
+</div>
+
+<div id="result"></div>
+</div>
+</div>
+
+<script>
+let matrices={};
+
+function createMatrix(){
+ const r=+document.getElementById("rows").value;
+ const c=+document.getElementById("cols").value;
+ let html='<h3>Matrix A</h3><div class="matrix" style="grid-template-columns:repeat('+c+',1fr)">';
+ for(let i=0;i<r*c;i++) html+=`<input id="a${i}" type="number" value="0">`;
+ html+='</div><br><h3>Matrix B</h3><div class="matrix" style="grid-template-columns:repeat('+c+',1fr)">';
+ for(let i=0;i<r*c;i++) html+=`<input id="b${i}" type="number" value="0">`;
+ html+='</div>';
+ document.getElementById("matrixBox").innerHTML=html;
+}
+
+function getMatrix(prefix,r,c){
+ let m=[];
+ for(let i=0;i<r;i++){
+  let row=[];
+  for(let j=0;j<c;j++) row.push(+document.getElementById(prefix+(i*c+j)).value);
+  m.push(row);
+ }
+ return m;
+}
+
+function show(m){
+ return '<div class="result">'+m.map(r=>r.join("   ")).join("\n")+'</div>';
+}
+
+function calculate(type){
+ const r=+rows.value,c=+cols.value;
+ const A=getMatrix("a",r,c),B=getMatrix("b",r,c);
+ let R=[];
+
+ if(type==="add"||type==="sub"){
+  for(let i=0;i<r;i++){
+   R[i]=[];
+   for(let j=0;j<c;j++)
+    R[i][j]=type==="add"?A[i][j]+B[i][j]:A[i][j]-B[i][j];
+  }
+ }else{
+  if(r!==c){result.innerHTML='<div class="result">For multiplication, use square matrices.</div>';return}
+  R=Array.from({length:r},()=>Array(c).fill(0));
+  for(let i=0;i<r;i++)
+   for(let j=0;j<c;j++)
+    for(let k=0;k<c;k++) R[i][j]+=A[i][k]*B[k][j];
+ }
+
+ result.innerHTML=show(R);
+}
+
+createMatrix();
+</script>
+</body>
+</html>
