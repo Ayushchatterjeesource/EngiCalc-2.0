@@ -1,1 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <title>EngiCalc 2.0 | Engineering Calculator & Toolkit</title>
+
+    <meta name="description"
+        content="EngiCalc 2.0 is an engineering calculator and toolkit for students. Solve matrices, vectors, complex numbers, electrical problems, physics, statistics and more.">
+
+    <meta name="theme-color" content="#07152f">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- APP -->
+
+    <div class="app">
+
+        <!-- HEADER -->
+
+        <header class="topbar">
+
+            <div class="brand">
+
+                <img
+                    src="engicalc2.0-logo.png"
+                    alt="EngiCalc 2.0 Logo"
+                    class="brand-logo"
+                >
+
+                <div class="brand-text">
+                    <h1>EngiCalc <span>2.0</span></h1>
+                    <p>Engineering Calculator & Toolkit</p>
+                </div>
+
+            </div>
+
+            <button
+                class="theme-btn"
+                id="themeToggle"
+                aria-label="Toggle theme"
+            >
+                🌙
+            </button>
+
+        </header>
+
+
+        <!-- HERO -->
+
+        <main>
+
+            <section class="hero">
+
+                <div class="hero-content">
+
+                    <div class="welcome-badge">
+                        ⚡ ENGINEERING TOOLKIT
+                    </div>
+
+                    <h2>
+                        Calculate.
+                        <span>Solve.</span>
+                        Understand.
+                    </h2>
+
+                    <p>
+                        Powerful engineering calculators and reference tools,
+                        designed for students.
+                    </p>
+
+                    <button
+                        class="explore-btn"
+                        onclick="scrollToTools()"
+                    >
+                        Explore Tools
+                        <span>↓</span>
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- TOOLS -->
+
+            <section class="tools-section" id="tools">
+
+                <div class="section-heading">
+
+                    <div>
+                        <p class="section-label">TOOLS</p>
+                        <h2>Engineering Calculators</h2>
+                    </div>
+
+                    <p class="tool-count">
+                        <span id="toolCount">9</span> Tools
+                    </p>
+
+                </div>
+
+
+                <div class="tools-grid">
+
+                    <!-- MATRIX -->
+
+                    <button
+                        class="tool-card matrix"
+                        onclick="openTool('Matrix Calculator')"
+                    >
+                        <div class="tool-icon">🧮</div>
+
+                        <div class="tool-info">
+                            <h3>Matrix</h3>
+                            <p>Matrix operations & calculations</p>
+                        </div>
+
+                        <span class="arrow">→</span>
+                    </button>
+
+
+                    <!-- VECTOR -->
+
+                    <button
+                        class="tool-card vector"
+                        onclick="openTool('Vector Calculator')"
+                    >
+                        <div class="tool-icon">➡️</div>
+
+                        <div class="tool-info">
+                            <h3>Vector</h3>
+                            <p>Vector operations & geometry</p>
+                        </div>
+
+                        <span class="arrow">→</span>
+                    </button>
+
+
+                    <!-- COMPLEX -->
+
+                    <button
+                        class="tool-card complex"
+                        onclick="openTool('Complex Number Calculator')"
+                    >
+                        <div class="tool-icon">🔢</div>
+
+                        <div class="tool-info">
+                            <h3>Complex Number</h3>
+                            <p>Complex number calculations</p>
+                        </div>
+
+                        <span class="arrow">→</span>
+                    </button>
+
+
+                    <!-- OHMS -->
+
+                    <button
+                        class="tool-card electrical"
+                        onclick="openTool('Ohm’s Law Calculator')"
+                    >
+                        <div class="tool-icon">⚡</div>
+
+                        <div class="tool-info">
+                            <h3>Ohm's Law</h3>
+                            <p>Voltage, current & resistance</p>
+                        </div>
+
+                        <span class="arrow">→</span>
+                    </button>
+
+
+                    <!-- KIRCHHOFF -->
+
+                    <button
+                        class="tool-card electrical"
+                        onclick="openTool('Kirchhoff Calculator')"
+                    >
+                        <div class="tool-icon">🔌</div>
+
+                        <div class="tool-info">
+                            <h3>Kirchhoff</h3>
+                            <p>KCL & KVL circuit calculations</p>
+                        </div>
+
+                        <span class="arrow">→</span>
+                    </button>
+
+
+                    <!-- PROJECTILE -->
+
+                    <button
+                        class="tool-card physics"
+                        onclick="openTool('Projectile Calculator')"
+                    >
+                        <div class="tool-icon">🚀</div>
+
+                        <div class="tool-info">
+                            <h3>Projectile</h3>
+                            <p>Motion & trajectory calculations</p>
+                        </div>
+
+                        <span class="arrow">→</span>
+                    </button>
+
+
+                    <!-- UNIT -->
+
+                    <button
+                        class="tool-card converter"
+                        onclick="openTool('Unit Converter')"
+                    >
+                        <div class="tool-icon">🔄</div>
+
+                        <div class="tool-info">
+                            <h3>Unit Converter</h3>
+                            <p>Convert engineering units</p>
+                        </div>
+
+                        <span class="arrow">→</span>
+                    </button>
+
+
+                    <!-- STATISTICS -->
+
+                    <button
+                        class="tool-card statistics"
+                        onclick="openTool('Statistics Calculator')"
+                    >
+                        <div class="tool-icon">📊</div>
+
+                        <div class="tool-info">
+                            <h3>Statistics</h3>
+                            <p>Mean, median, variance & more</p>
+                        </div>
+
+                        <span class="arrow">→</span>
+                    </button>
+
+
+                    <!-- CONSTANTS -->
+
+                    <button
+                        class="tool-card constants"
+                        onclick="openTool('Engineering Constants')"
+                    >
+                        <div class="tool-icon">📐</div>
+
+                        <div class="tool-info">
+                            <h3>Engineering Constants</h3>
+                            <p>Important engineering values</p>
+                        </div>
+
+                        <span class="arrow">→</span>
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- QUICK INFO -->
+
+            <section class="quick-section">
+
+                <div class="quick-card">
+
+                    <div class="quick-icon">🎓</div>
+
+                    <div>
+                        <h3>Built for Engineering Students</h3>
+                        <p>
+                            Useful tools for mathematics, physics,
+                            electrical engineering and everyday calculations.
+                        </p>
+                    </div>
+
+                </div>
+
+
+                <div class="quick-card">
+
+                    <div class="quick-icon">📱</div>
+
+                    <div>
+                        <h3>Works on Mobile</h3>
+                        <p>
+                            A clean, responsive interface designed
+                            to feel like a mobile application.
+                        </p>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- FOOTER -->
+
+        <footer class="footer">
+
+            <div class="footer-logo">
+
+                <img
+                    src="engicalc2.0-logo.png"
+                    alt="EngiCalc 2.0"
+                >
+
+                <div>
+                    <h3>EngiCalc 2.0</h3>
+                    <p>Engineering Calculator & Toolkit</p>
+                </div>
+
+            </div>
+
+
+            <div class="footer-line"></div>
+
+
+            <p class="made-text">
+                This EngiCalc is made by AyushChatterjee
+            </p>
+
+
+            <p class="founder">
+                Founder:
+                <a href="./">
+                    EngiCalc2.0.com
+                </a>
+            </p>
+
+
+            <p class="copyright">
+                © 2026 EngiCalc 2.0. All rights reserved.
+            </p>
+
+        </footer>
+
+
+        <!-- MOBILE BOTTOM NAV -->
+
+        <nav class="bottom-nav">
+
+            <button
+                class="nav-item active"
+                onclick="goHome()"
+            >
+                <span>⌂</span>
+                <small>Home</small>
+            </button>
+
+            <button
+                class="nav-item"
+                onclick="scrollToTools()"
+            >
+                <span>⚙</span>
+                <small>Tools</small>
+            </button>
+
+            <button
+                class="nav-item"
+                onclick="showComingSoon('History')"
+            >
+                <span>🕘</span>
+                <small>History</small>
+            </button>
+
+            <button
+                class="nav-item"
+                onclick="showComingSoon('Settings')"
+            >
+                <span>⚙️</span>
+                <small>Settings</small>
+            </button>
+
+        </nav>
+
+    </div>
+
+
+    <!-- TOOL MESSAGE -->
+
+    <div
+        class="modal"
+        id="toolModal"
+        aria-hidden="true"
+    >
+
+        <div class="modal-box">
+
+            <button
+                class="modal-close"
+                onclick="closeModal()"
+            >
+                ×
+            </button>
+
+            <div class="modal-icon">⚡</div>
+
+            <h2 id="modalTitle">Coming Soon</h2>
+
+            <p>
+                This calculator is being prepared for EngiCalc 2.0.
+            </p>
+
+            <span class="coming-badge">
+                Coming Soon
+            </span>
+
+            <button
+                class="modal-button"
+                onclick="closeModal()"
+            >
+                Got it
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
