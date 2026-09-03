@@ -1,63 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Vector Calculator - EngiCalc 2.0</title>
-<style>
-*{box-sizing:border-box}body{font-family:Arial;background:#f5f7fb;margin:0;color:#172033}
-header{background:#111827;color:white;text-align:center;padding:18px}
-header img{width:50px;vertical-align:middle;margin-right:8px}header a{color:white;text-decoration:none}
-.container{max-width:700px;margin:25px auto;padding:15px}.card{background:white;padding:25px;border-radius:18px;box-shadow:0 5px 20px #0001}
-input,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
-button{background:#2563eb;color:white;border:0;font-weight:bold}.result{margin-top:15px;background:#eff6ff;padding:18px;border-radius:12px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Vector Calculator - EngiCalc 2.0</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .tool-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tool-container h2 {
+            color: var(--text-white);
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .vector-inputs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+        .vector-inputs input {
+            width: 100%;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+            text-align: center;
+        }
+        .vector-inputs input:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .result-box {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .result-box .sub-result {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-calculate:active {
+            transform: scale(0.97);
+        }
+        .btn-calculate:hover {
+            opacity: 0.9;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+    </style>
 </head>
 <body>
-<header><a href="../index.html"><img src="../engicalc2.0-logo.png"><b>EngiCalc 2.0</b></a></header>
-<div class="container"><div class="card">
-<h2>Vector Calculator</h2>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="logo-img" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                <span class="logo-text">Engi<span>Calc</span> 2.0</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
 
-<input id="ax" type="number" placeholder="Aₓ">
-<input id="ay" type="number" placeholder="Aᵧ">
-<input id="az" type="number" placeholder="A𝓏">
+        <a href="../index.html" class="back-btn">← Back to Home</a>
 
-<input id="bx" type="number" placeholder="Bₓ">
-<input id="by" type="number" placeholder="Bᵧ">
-<input id="bz" type="number" placeholder="B𝓏">
+        <div class="tool-container">
+            <h2>➤ Vector Calculator</h2>
 
-<button onclick="calculate()">Calculate</button>
-<div id="result"></div>
-</div></div>
+            <div class="input-group">
+                <label>Vector A (x, y, z)</label>
+                <div class="vector-inputs">
+                    <input type="number" id="ax" value="1" step="any">
+                    <input type="number" id="ay" value="2" step="any">
+                    <input type="number" id="az" value="3" step="any">
+                </div>
+            </div>
 
-<script>
-function calculate(){
-let ax=+document.getElementById("ax").value,ay=+document.getElementById("ay").value,az=+document.getElementById("az").value;
-let bx=+document.getElementById("bx").value,by=+document.getElementById("by").value,bz=+document.getElementById("bz").value;
+            <div class="input-group">
+                <label>Vector B (x, y, z)</label>
+                <div class="vector-inputs">
+                    <input type="number" id="bx" value="4" step="any">
+                    <input type="number" id="by" value="5" step="any">
+                    <input type="number" id="bz" value="6" step="any">
+                </div>
+            </div>
 
-let dot=ax*bx+ay*by+az*bz;
-let cross=[
- ay*bz-az*by,
- az*bx-ax*bz,
- ax*by-ay*bx
-];
-let ma=Math.sqrt(ax*ax+ay*ay+az*az);
-let mb=Math.sqrt(bx*bx+by*by+bz*bz);
+            <div class="input-group">
+                <label>Operation</label>
+                <select id="operation">
+                    <option value="add">Addition (A + B)</option>
+                    <option value="subtract">Subtraction (A - B)</option>
+                    <option value="dot">Dot Product (A · B)</option>
+                    <option value="cross">Cross Product (A × B)</option>
+                </select>
+            </div>
 
-result.innerHTML=`<div class="result">
-<b>A + B</b> = (${ax+bx}, ${ay+by}, ${az+bz})
+            <button class="btn-calculate" id="calculateBtn">Calculate</button>
 
-<b>A − B</b> = (${ax-bx}, ${ay-by}, ${az-bz})
+            <div class="result-box" id="resultDisplay">
+                Result
+                <span class="sub-result">Enter values and click Calculate</span>
+            </div>
+        </div>
 
-<b>A · B</b> = ${dot}
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="footer-logo-img" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22%3E%3Crect width=%2236%22 height=%2236%22 rx=%228%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                    <span class="footer-logo-text">Engi<span>Calc</span> 2.0</span>
+                </div>
+                <p class="footer-text">This EngiCalc is made by <strong>AyushChatterjee</strong></p>
+                <p class="footer-text">Founder: <strong>EngiCalc2.0.com</strong></p>
+                <p class="footer-copy">© 2026 EngiCalc 2.0. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
 
-<b>A × B</b> = (${cross.join(", ")})
+    <script src="../script.js"></script>
+    <script>
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const ax = parseFloat(document.getElementById('ax').value) || 0;
+            const ay = parseFloat(document.getElementById('ay').value) || 0;
+            const az = parseFloat(document.getElementById('az').value) || 0;
+            const bx = parseFloat(document.getElementById('bx').value) || 0;
+            const by = parseFloat(document.getElementById('by').value) || 0;
+            const bz = parseFloat(document.getElementById('bz').value) || 0;
 
-<b>|A|</b> = ${ma.toFixed(4)}
+            const operation = document.getElementById('operation').value;
+            let result, label;
 
-<b>|B|</b> = ${mb.toFixed(4)}
-</div>`;
-}
-</script>
+            switch(operation) {
+                case 'add':
+                    result = `(${ax+bx}, ${ay+by}, ${az+bz})`;
+                    label = 'A + B';
+                    break;
+                case 'subtract':
+                    result = `(${ax-bx}, ${ay-by}, ${az-bz})`;
+                    label = 'A - B';
+                    break;
+                case 'dot':
+                    const dot = ax*bx + ay*by + az*bz;
+                    result = dot;
+                    label = 'A · B =';
+                    break;
+                case 'cross':
+                    const cx = ay*bz - az*by;
+                    const cy = az*bx - ax*bz;
+                    const cz = ax*by - ay*bx;
+                    result = `(${cx}, ${cy}, ${cz})`;
+                    label = 'A × B';
+                    break;
+            }
+
+            document.getElementById('resultDisplay').innerHTML = `
+                ${label} = ${result}
+                <span class="sub-result">Operation: ${document.getElementById('operation').selectedOptions[0].text}</span>
+            `;
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('calculateBtn').click();
+            }
+        });
+    </script>
 </body>
 </html>
