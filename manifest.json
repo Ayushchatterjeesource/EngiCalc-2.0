@@ -3,7 +3,7 @@
   "short_name": "EngiCalc",
   "description": "Powerful engineering calculator and toolkit",
   "start_url": "/EngiCalc-2.0/",
-  "display": "standalone",
+  "display": "fullscreen",
   "background_color": "#0a0e17",
   "theme_color": "#0a0e17",
   "orientation": "portrait",
