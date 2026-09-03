@@ -3,71 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EngiCalc 2.0 - Dashboard</title>
+    <title>EngiCalc 2.0 | Engineering Dashboard</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
+    <!-- Header Section -->
     <header>
         <nav class="navbar">
             <div class="logo">
-                <img src="engicalc2.0-logo.png" alt="Logo">
+                <img src="engicalc2.0-logo.png" alt="EngiCalc Logo">
                 <span>EngiCalc 2.0</span>
             </div>
-            <button id="theme-toggle"><i class="fas fa-moon"></i></button>
+            <div class="nav-right">
+                <button id="theme-toggle" class="icon-btn">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
         </nav>
     </header>
 
+    <!-- Main Content -->
     <main class="container">
+        <!-- Hero Section -->
         <section class="hero">
             <h1>Engineering Blueprint 2.0</h1>
-            <div class="search-container">
-                <input type="text" id="search" placeholder="Search for calculators...">
+            <p>Advanced Tools for Professional Engineers</p>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="calcSearch" placeholder="Search for a calculator..." onkeyup="searchCalculators()">
             </div>
         </section>
 
-        <div class="grid">
-            <!-- Matrix Calculator -->
-            <a href="calculator/matrix.html" class="card">
-                <i class="fas fa-table-cells"></i>
-                <h3>Matrix Calculator</h3>
-            </a>
+        <!-- Calculators Grid -->
+        <section class="grid-section">
+            <h2 class="section-title">All Calculators</h2>
+            <div class="calc-grid" id="calcGrid">
+                <!-- Scientific -->
+                <a href="calculator/scientific.html" class="calc-card">
+                    <i class="fas fa-calculator"></i>
+                    <h3>Scientific Calculator</h3>
+                </a>
+                <!-- Matrix -->
+                <a href="calculator/matrix.html" class="calc-card">
+                    <i class="fas fa-th"></i>
+                    <h3>Matrix Calculator</h3>
+                </a>
+                <!-- Ohm's Law -->
+                <a href="calculator/ohms-law.html" class="calc-card">
+                    <i class="fas fa-bolt"></i>
+                    <h3>Ohm’s Law</h3>
+                </a>
+                <!-- Kirchhoff’s Law -->
+                <a href="calculator/kirchhoff.html" class="calc-card">
+                    <i class="fas fa-wave-square"></i>
+                    <h3>Kirchhoff’s Law</h3>
+                </a>
+                <!-- Projectile -->
+                <a href="calculator/projectile.html" class="calc-card">
+                    <i class="fas fa-rocket"></i>
+                    <h3>Projectile Motion</h3>
+                </a>
+                <!-- Unit Converter -->
+                <a href="calculator/unit-converter.html" class="calc-card">
+                    <i class="fas fa-exchange-alt"></i>
+                    <h3>Unit Converter</h3>
+                </a>
+                <!-- Statistics -->
+                <a href="calculator/statistics.html" class="calc-card">
+                    <i class="fas fa-chart-bar"></i>
+                    <h3>Statistics</h3>
+                </a>
+                <!-- Vector -->
+                <a href="calculator/vector.html" class="calc-card">
+                    <i class="fas fa-arrows-up-down-left-right"></i>
+                    <h3>Vector Calculator</h3>
+                </a>
+            </div>
+        </section>
 
-            <!-- Ohm's Law -->
-            <a href="calculator/ohms-law.html" class="card">
-                <i class="fas fa-bolt"></i>
-                <h3>Ohm's Law</h3>
-            </a>
-
-            <!-- Complex Number -->
-            <a href="calculator/complex.html" class="card">
-                <i class="fas fa-square-root-variable"></i>
-                <h3>Complex Numbers</h3>
-            </a>
-
-            <!-- Unit Converter -->
-            <a href="calculator/unit-converter.html" class="card">
-                <i class="fas fa-ruler-combined"></i>
-                <h3>Unit Converter</h3>
-            </a>
-
-            <!-- Reference Section -->
-            <a href="reference/index.html" class="card highlight">
-                <i class="fas fa-book"></i>
-                <h3>Engineering Reference</h3>
-            </a>
-        </div>
+        <!-- Engineering Reference -->
+        <section class="grid-section">
+            <h2 class="section-title">Reference & Resources</h2>
+            <div class="calc-grid">
+                <a href="reference/constants.html" class="calc-card ref">
+                    <i class="fas fa-atom"></i>
+                    <h3>Engineering Constants</h3>
+                </a>
+                <a href="reference/formulas.html" class="calc-card ref">
+                    <i class="fas fa-square-root-variable"></i>
+                    <h3>Math Formulas</h3>
+                </a>
+            </div>
+        </section>
     </main>
 
+    <!-- Footer Section -->
     <footer>
-        <div class="footer-content">
-            <img src="engicalc2.0-logo.png" alt="Logo">
-            <p>Made by <strong>Ayush Chatterjee</strong></p>
-            <p>© 2026 EngiCalc 2.0. All rights reserved.</p>
-        </div>
-    </footer>
-
-    <script src="script.js"></script>
-</body>
-</html>
+        <div class="footer-con
