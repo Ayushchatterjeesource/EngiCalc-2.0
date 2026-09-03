@@ -2,26 +2,290 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Statistics - EngiCalc 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Statistics Calculator - EngiCalc 2.0</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        .tool-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tool-container h2 {
+            color: var(--text-white);
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .input-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+            min-height: 80px;
+            resize: vertical;
+            font-family: inherit;
+        }
+        .input-group textarea:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .result-box {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .result-box .stat-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+        }
+        .result-box .stat-item {
+            background: var(--bg-card);
+            padding: 8px 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+        .result-box .stat-item .label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .result-box .stat-item .value {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+        }
+        .result-box .sub-result {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-top: 6px;
+        }
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-calculate:active {
+            transform: scale(0.97);
+        }
+        .btn-calculate:hover {
+            opacity: 0.9;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+        .example-hint {
+            color: var(--text-secondary);
+            font-size: 12px;
+            text-align: right;
+            margin-top: 4px;
+            cursor: pointer;
+        }
+        .example-hint:hover {
+            color: var(--accent-cyan);
+        }
+    </style>
 </head>
 <body>
-    <header><div class="navbar"><a href="../index.html" style="text-decoration: none; color: var(--primary-blue);">← Back</a><span>Statistics</span></div></header>
-    <div style="max-width: 500px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center;">
-        <h3>Mean Calculator</h3>
-        <p>Enter numbers separated by commas (e.g. 10, 20, 30)</p>
-        <input type="text" id="statInput" style="width: 100%; padding: 12px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc; background: var(--bg-color); color: var(--text-color);">
-        <button onclick="calcStat()" style="width:100%; padding:15px; background:var(--primary-blue); color:white; border:none; border-radius:10px; cursor:pointer;">Calculate Mean</button>
-        <div id="statRes" style="font-size: 1.5rem; color: var(--primary-blue); margin-top: 20px;">Result: 0</div>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="logo-img" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                <span class="logo-text">Engi<span>Calc</span> 2.0</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
+
+        <a href="../index.html" class="back-btn">← Back to Home</a>
+
+        <div class="tool-container">
+            <h2>σ Statistics Calculator</h2>
+
+            <div class="input-group">
+                <label>Enter numbers (comma or space separated)</label>
+                <textarea id="dataInput" placeholder="e.g., 10, 20, 30, 40, 50">10, 20, 30, 40, 50</textarea>
+                <div class="example-hint" id="exampleBtn">📋 Use example: 10, 20, 30, 40, 50</div>
+            </div>
+
+            <button class="btn-calculate" id="calculateBtn">Calculate Statistics</button>
+
+            <div class="result-box" id="resultDisplay">
+                <div class="stat-row">
+                    <div class="stat-item">
+                        <div class="label">Mean (Average)</div>
+                        <div class="value" id="meanVal">-</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="label">Median</div>
+                        <div class="value" id="medianVal">-</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="label">Mode</div>
+                        <div class="value" id="modeVal">-</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="label">Standard Deviation</div>
+                        <div class="value" id="stdVal">-</div>
+                    </div>
+                </div>
+                <span class="sub-result">Enter numbers and click Calculate</span>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="footer-logo-img" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22%3E%3Crect width=%2236%22 height=%2236%22 rx=%228%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                    <span class="footer-logo-text">Engi<span>Calc</span> 2.0</span>
+                </div>
+                <p class="footer-text">This EngiCalc is made by <strong>AyushChatterjee</strong></p>
+                <p class="footer-text">Founder: <strong>EngiCalc2.0.com</strong></p>
+                <p class="footer-copy">© 2026 EngiCalc 2.0. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
+
+    <script src="../script.js"></script>
     <script>
-        function calcStat() {
-            let val = document.getElementById('statInput').value;
-            let arr = val.split(',').map(Number);
-            let sum = arr.reduce((a, b) => a + b, 0);
-            let mean = sum / arr.length;
-            document.getElementById('statRes').innerText = "Mean: " + (mean || 0).toFixed(2);
-        }
+        // ===== EXAMPLE DATA =====
+        document.getElementById('exampleBtn').addEventListener('click', function() {
+            document.getElementById('dataInput').value = '10, 20, 30, 40, 50, 60, 70';
+            document.getElementById('calculateBtn').click();
+        });
+
+        // ===== STATISTICS CALCULATIONS =====
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const input = document.getElementById('dataInput').value;
+            const numbers = input.split(/[,\s]+/).filter(n => n.trim() !== '').map(Number);
+            const validNumbers = numbers.filter(n => !isNaN(n));
+
+            if (validNumbers.length === 0) {
+                document.getElementById('resultDisplay').innerHTML = '⚠️ Please enter valid numbers';
+                return;
+            }
+
+            const sorted = [...validNumbers].sort((a, b) => a - b);
+            const n = sorted.length;
+
+            // Mean
+            const sum = sorted.reduce((a, b) => a + b, 0);
+            const mean = sum / n;
+
+            // Median
+            let median;
+            if (n % 2 === 0) {
+                median = (sorted[n/2 - 1] + sorted[n/2]) / 2;
+            } else {
+                median = sorted[Math.floor(n/2)];
+            }
+
+            // Mode
+            const freq = {};
+            sorted.forEach(num => freq[num] = (freq[num] || 0) + 1);
+            let maxFreq = 0;
+            let modes = [];
+            for (const [num, count] of Object.entries(freq)) {
+                if (count > maxFreq) {
+                    maxFreq = count;
+                    modes = [num];
+                } else if (count === maxFreq) {
+                    modes.push(num);
+                }
+            }
+            const mode = modes.length === 1 ? modes[0] : modes.join(', ');
+
+            // Standard Deviation (population)
+            const variance = sorted.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / n;
+            const stdDev = Math.sqrt(variance);
+
+            // Display results
+            document.getElementById('meanVal').textContent = mean.toFixed(4);
+            document.getElementById('medianVal').textContent = median.toFixed(4);
+            document.getElementById('modeVal').textContent = mode;
+            document.getElementById('stdVal').textContent = stdDev.toFixed(4);
+
+            document.querySelector('#resultDisplay .sub-result').textContent = 
+                `n = ${n} numbers | Sum = ${sum.toFixed(2)}`;
+        });
+
+        // Auto-calculate on Enter (Ctrl+Enter for textarea)
+        document.getElementById('dataInput').addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                document.getElementById('calculateBtn').click();
+            }
+        });
+
+        // Initial calculation
+        document.getElementById('calculateBtn').click();
     </script>
 </body>
 </html>
