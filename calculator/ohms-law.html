@@ -1,52 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Ohm's Law - EngiCalc 2.0</title>
-<style>
-*{box-sizing:border-box}body{font-family:Arial;background:#f5f7fb;margin:0;color:#172033}
-header{background:#111827;color:white;text-align:center;padding:18px}header a{color:white;text-decoration:none}
-header img{width:50px;vertical-align:middle}
-.container{max-width:650px;margin:25px auto;padding:15px}.card{background:white;padding:25px;border-radius:18px;box-shadow:0 5px 20px #0001}
-input,select,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
-button{background:#2563eb;color:white;border:0;font-weight:bold}.result{margin-top:15px;background:#eff6ff;padding:18px;border-radius:12px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ohm's Law - EngiCalc 2.0</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .calc-container { max-width: 600px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; box-shadow: var(--shadow); }
+        .input-group { margin-bottom: 20px; }
+        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; }
+        .input-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccc; background: var(--bg-color); color: var(--text-color); }
+        .result-box { margin-top: 25px; padding: 20px; background: var(--primary-blue); color: white; border-radius: 10px; text-align: center; font-size: 1.5rem; display: none; }
+        .btn-calc { width: 100%; padding: 15px; border: none; border-radius: 10px; background: var(--primary-blue); color: white; font-size: 1.1rem; cursor: pointer; }
+    </style>
 </head>
 <body>
-<header><a href="../index.html"><img src="../engicalc2.0-logo.png"> <b>EngiCalc 2.0</b></a></header>
-<div class="container"><div class="card">
-<h2>Ohm's Law Calculator</h2>
-<p>Formula: <b>V = I × R</b></p>
+    <header>
+        <div class="navbar">
+            <a href="../index.html" style="text-decoration: none; color: var(--primary-blue); font-weight: bold;">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+            <span style="font-weight: bold;">Ohm's Law</span>
+        </div>
+    </header>
 
-<select id="find">
-<option value="v">Find Voltage (V)</option>
-<option value="i">Find Current (I)</option>
-<option value="r">Find Resistance (R)</option>
-</select>
+    <div class="calc-container">
+        <h2>Ohm's Law Calculator</h2>
+        <p>Leave one field blank to calculate its value.</p><br>
+        
+        <div class="input-group">
+            <label>Voltage (V) - Volts</label>
+            <input type="number" id="voltage" placeholder="Enter Voltage">
+        </div>
+        <div class="input-group">
+            <label>Current (I) - Amps</label>
+            <input type="number" id="current" placeholder="Enter Current">
+        </div>
+        <div class="input-group">
+            <label>Resistance (R) - Ohms</label>
+            <input type="number" id="resistance" placeholder="Enter Resistance">
+        </div>
 
-<input id="x" type="number" placeholder="Value 1">
-<input id="y" type="number" placeholder="Value 2">
+        <button class="btn-calc" onclick="calculateOhms()">Calculate</button>
+        <div id="result" class="result-box"></div>
+    </div>
 
-<button onclick="calculate()">Calculate</button>
-<div id="result"></div>
-</div></div>
+    <script>
+        function calculateOhms() {
+            let v = document.getElementById('voltage').value;
+            let i = document.getElementById('current').value;
+            let r = document.getElementById('resistance').value;
+            let resDiv = document.getElementById('result');
+            resDiv.style.display = "block";
 
-<script>
-function calculate(){
-let f=document.getElementById("find").value;
-let x=+document.getElementById("x").value;
-let y=+document.getElementById("y").value;
-let ans;
-
-if(f==="v") ans=x*y;
-if(f==="i") ans=y===0?"Undefined":x/y;
-if(f==="r") ans=y===0?"Undefined":x/y;
-
-let unit=f==="v"?"V":f==="i"?"A":"Ω";
-
-result.innerHTML=`<div class="result"><b>Result:</b> ${ans} ${unit}</div>`;
-}
-</script>
-</body>
-</html>
+            if (v === "" && i !== "" && r !== "") {
+                resDiv.innerHTML = "Voltage (V) = " + (i * r).toFixed(2) + " V";
+            } else if (i === "" && v !== "" && r !== "") {
+                resDiv.innerHTML = "Curren
