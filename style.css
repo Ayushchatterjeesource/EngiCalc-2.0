@@ -1,506 +1,195 @@
-/* =====================================================
-   SCIENTIFIC CALCULATOR
-===================================================== */
-
-.scientific-section {
-
-    display: none;
-
-    width: 100%;
-
-    max-width: 720px;
-
-    margin: 30px auto;
-
-    padding: 0 16px;
-
+/* Variables for Themes */
+:root {
+    --bg-color: #f0f2f5;
+    --card-bg: #ffffff;
+    --text-color: #1a1a1a;
+    --primary-blue: #007bff;
+    --header-bg: #ffffff;
+    --shadow: 0 4px 12px rgba(0,0,0,0.08);
 }
 
-
-.scientific-section.scientific-open {
-
-    display: block;
-
-    animation: scientificOpen 0.3s ease;
-
+body.dark-mode {
+    --bg-color: #0f172a;
+    --card-bg: #1e293b;
+    --text-color: #f8fafc;
+    --primary-blue: #38bdf8;
+    --header-bg: #1e293b;
+    --shadow: 0 4px 15px rgba(0,0,0,0.3);
 }
 
-
-@keyframes scientificOpen {
-
-    from {
-
-        opacity: 0;
-
-        transform: translateY(15px);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform: translateY(0);
-
-    }
-
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
-
-.scientific-card {
-
-    background:
-        rgba(15, 23, 42, 0.96);
-
-    border:
-        1px solid rgba(96, 165, 250, 0.25);
-
-    border-radius: 24px;
-
-    padding: 20px;
-
-    box-shadow:
-        0 20px 60px rgba(0,0,0,0.35);
-
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    transition: background 0.3s ease;
+    line-height: 1.6;
 }
 
+/* Navbar */
+header {
+    background: var(--header-bg);
+    padding: 1rem 5%;
+    box-shadow: var(--shadow);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
 
-.scientific-header {
-
+.navbar {
     display: flex;
-
-    align-items: flex-start;
-
     justify-content: space-between;
-
-    gap: 15px;
-
-    margin-bottom: 18px;
-
+    align-items: center;
 }
 
-
-.scientific-header h2 {
-
-    margin: 5px 0;
-
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-
-.scientific-header p {
-
-    opacity: 0.7;
-
+.logo img {
+    height: 40px;
 }
 
+.logo span {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: var(--primary-blue);
+}
 
-.scientific-close {
-
-    width: 42px;
-
-    height: 42px;
-
-    border: 0;
-
-    border-radius: 12px;
-
+#theme-toggle {
+    background: none;
+    border: 2px solid var(--primary-blue);
+    color: var(--primary-blue);
+    padding: 8px 12px;
+    border-radius: 50%;
     cursor: pointer;
-
-    font-size: 18px;
-
+    transition: 0.3s;
 }
 
-
-.scientific-display {
-
-    background:
-        #020617;
-
-    border-radius: 16px;
-
-    padding: 15px;
-
-    margin-bottom: 12px;
-
+#theme-toggle:hover {
+    background: var(--primary-blue);
+    color: white;
 }
 
-
-.scientific-expression {
-
-    min-height: 22px;
-
-    text-align: right;
-
-    color: #94a3b8;
-
-    font-size: 14px;
-
-    overflow-x: auto;
-
-    white-space: nowrap;
-
+/* Container & Hero */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 5%;
 }
 
+.hero {
+    text-align: center;
+    padding: 3rem 0;
+}
 
-#scientificDisplay {
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
 
+.search-box {
+    margin: 2rem auto;
+    max-width: 600px;
+    position: relative;
+}
+
+.search-box input {
     width: 100%;
-
-    border: 0;
-
-    outline: 0;
-
-    background: transparent;
-
-    color: white;
-
-    text-align: right;
-
-    font-size: clamp(28px, 6vw, 42px);
-
-    font-weight: 600;
-
-    margin-top: 5px;
-
+    padding: 15px 50px;
+    border-radius: 30px;
+    border: none;
+    background: var(--card-bg);
+    color: var(--text-color);
+    box-shadow: var(--shadow);
+    font-size: 1rem;
 }
 
+.search-box i {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-blue);
+}
 
-.angle-row {
+/* Grid Section */
+.section-title {
+    margin: 2rem 0 1.5rem;
+    border-left: 5px solid var(--primary-blue);
+    padding-left: 15px;
+}
 
+.calc-grid {
     display: grid;
-
-    grid-template-columns: 1fr 1fr;
-
-    gap: 8px;
-
-    margin-bottom: 10px;
-
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
 }
 
-
-.angle-button {
-
-    min-height: 40px;
-
-    border: 0;
-
-    border-radius: 10px;
-
-    cursor: pointer;
-
-    font-weight: 700;
-
-    background: rgba(255,255,255,0.08);
-
-    color: inherit;
-
+.calc-card {
+    background: var(--card-bg);
+    padding: 30px 20px;
+    border-radius: 15px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--text-color);
+    box-shadow: var(--shadow);
+    transition: 0.3s;
 }
 
-
-.angle-button.active {
-
-    background: #2563eb;
-
-    color: white;
-
+.calc-card:hover {
+    transform: translateY(-8px);
+    border: 1px solid var(--primary-blue);
 }
 
-
-.scientific-buttons {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(5, 1fr);
-
-    gap: 8px;
-
+.calc-card i {
+    font-size: 2.5rem;
+    color: var(--primary-blue);
+    margin-bottom: 15px;
 }
 
-
-.scientific-buttons button {
-
-    min-height: 54px;
-
-    border: 0;
-
-    border-radius: 13px;
-
-    cursor: pointer;
-
-    font-size: 17px;
-
-    font-weight: 600;
-
-    background:
-        rgba(255,255,255,0.08);
-
-    color: inherit;
-
-    transition:
-        transform 0.12s ease,
-        background 0.15s ease;
-
+.calc-card.ref {
+    background: linear-gradient(135deg, var(--card-bg), #eef);
 }
 
-
-.scientific-buttons button:hover {
-
-    background:
-        rgba(255,255,255,0.14);
-
+body.dark-mode .calc-card.ref {
+    background: linear-gradient(135deg, var(--card-bg), #1e294b);
 }
 
-
-.scientific-buttons button:active {
-
-    transform: scale(0.95);
-
+/* Footer */
+footer {
+    background: var(--header-bg);
+    padding: 3rem 5%;
+    text-align: center;
+    margin-top: 4rem;
+    box-shadow: 0 -4px 12px rgba(0,0,0,0.05);
 }
 
-
-.scientific-buttons
-.calc-function {
-
-    background:
-        rgba(37, 99, 235, 0.18);
-
+.footer-logo {
+    height: 50px;
+    margin-bottom: 15px;
 }
 
-
-.scientific-buttons
-.calc-operator {
-
-    background:
-        rgba(245, 158, 11, 0.18);
-
+.footer-container a {
+    color: var(--primary-blue);
+    text-decoration: none;
 }
 
-
-.scientific-buttons
-.calc-equals {
-
-    background:
-        #2563eb;
-
-    color: white;
-
-    grid-column:
-        span 2;
-
+.copyright {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    opacity: 0.7;
 }
 
-
-.scientific-buttons
-.danger {
-
-    background:
-        rgba(239, 68, 68, 0.2);
-
-}
-
-
-/* =====================================================
-   LIGHT MODE
-===================================================== */
-
-body.light-mode
-.scientific-card {
-
-    background:
-        #ffffff;
-
-    color:
-        #0f172a;
-
-    border-color:
-        rgba(37, 99, 235, 0.2);
-
-}
-
-
-body.light-mode
-.scientific-display {
-
-    background:
-        #f1f5f9;
-
-}
-
-
-body.light-mode
-#scientificDisplay {
-
-    color:
-        #0f172a;
-
-}
-
-
-body.light-mode
-.scientific-buttons button {
-
-    background:
-        #e2e8f0;
-
-    color:
-        #0f172a;
-
-}
-
-
-body.light-mode
-.scientific-buttons
-.calc-function {
-
-    background:
-        #dbeafe;
-
-}
-
-
-body.light-mode
-.scientific-buttons
-.calc-operator {
-
-    background:
-        #fef3c7;
-
-}
-
-
-/* =====================================================
-   MOBILE
-===================================================== */
-
-@media (max-width: 600px) {
-
-    .scientific-section {
-
-        padding:
-            0 10px;
-
-        margin:
-            20px auto;
-
-    }
-
-
-    .scientific-card {
-
-        padding:
-            12px;
-
-        border-radius:
-            18px;
-
-    }
-
-
-    .scientific-header {
-
-        margin-bottom:
-            12px;
-
-    }
-
-
-    .scientific-header h2 {
-
-        font-size:
-            22px;
-
-    }
-
-
-    .scientific-header p {
-
-        font-size:
-            13px;
-
-    }
-
-
-    .scientific-close {
-
-        width:
-            38px;
-
-        height:
-            38px;
-
-    }
-
-
-    .scientific-buttons {
-
-        gap:
-            6px;
-
-    }
-
-
-    .scientific-buttons button {
-
-        min-height:
-            50px;
-
-        border-radius:
-            11px;
-
-        font-size:
-            15px;
-
-    }
-
-
-    #scientificDisplay {
-
-        font-size:
-            30px;
-
-    }
-
-}
-
-
-@media (max-width: 380px) {
-
-    .scientific-card {
-
-        padding:
-            9px;
-
-    }
-
-
-    .scientific-buttons {
-
-        gap:
-            5px;
-
-    }
-
-
-    .scientific-buttons button {
-
-        min-height:
-            46px;
-
-        font-size:
-            14px;
-
-        border-radius:
-            9px;
-
-    }
-
-
-    #scientificDisplay {
-
-        font-size:
-            26px;
-
-    }
-
+/* Responsive */
+@media (max-width: 768px) {
+    .hero h1 { font-size: 1.8rem; }
+    .calc-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
 }
