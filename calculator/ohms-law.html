@@ -2,59 +2,238 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ohm's Law - EngiCalc 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ohm's Law Calculator - EngiCalc 2.0</title>
     <link rel="stylesheet" href="../style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        .calc-container { max-width: 600px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; box-shadow: var(--shadow); }
-        .input-group { margin-bottom: 20px; }
-        .input-group label { display: block; margin-bottom: 8px; font-weight: bold; }
-        .input-group input { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #ccc; background: var(--bg-color); color: var(--text-color); }
-        .result-box { margin-top: 25px; padding: 20px; background: var(--primary-blue); color: white; border-radius: 10px; text-align: center; font-size: 1.5rem; display: none; }
-        .btn-calc { width: 100%; padding: 15px; border: none; border-radius: 10px; background: var(--primary-blue); color: white; font-size: 1.1rem; cursor: pointer; }
+        .tool-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tool-container h2 {
+            color: var(--text-white);
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .result-box {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .result-box .sub-result {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-calculate:active {
+            transform: scale(0.97);
+        }
+        .btn-calculate:hover {
+            opacity: 0.9;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+        .formula-hint {
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+        .formula-hint strong {
+            color: var(--accent-cyan);
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="navbar">
-            <a href="../index.html" style="text-decoration: none; color: var(--primary-blue); font-weight: bold;">
-                <i class="fas fa-arrow-left"></i> Back to Home
-            </a>
-            <span style="font-weight: bold;">Ohm's Law</span>
-        </div>
-    </header>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="logo-img" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                <span class="logo-text">Engi<span>Calc</span> 2.0</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
 
-    <div class="calc-container">
-        <h2>Ohm's Law Calculator</h2>
-        <p>Leave one field blank to calculate its value.</p><br>
-        
-        <div class="input-group">
-            <label>Voltage (V) - Volts</label>
-            <input type="number" id="voltage" placeholder="Enter Voltage">
-        </div>
-        <div class="input-group">
-            <label>Current (I) - Amps</label>
-            <input type="number" id="current" placeholder="Enter Current">
-        </div>
-        <div class="input-group">
-            <label>Resistance (R) - Ohms</label>
-            <input type="number" id="resistance" placeholder="Enter Resistance">
+        <a href="../index.html" class="back-btn">← Back to Home</a>
+
+        <div class="tool-container">
+            <h2>Ω Ohm's Law Calculator</h2>
+
+            <div class="formula-hint">
+                <strong>V = I × R</strong> &nbsp;|&nbsp; <strong>I = V ÷ R</strong> &nbsp;|&nbsp; <strong>R = V ÷ I</strong>
+            </div>
+
+            <div class="input-group">
+                <label>Voltage (V) - Volts</label>
+                <input type="number" id="voltage" placeholder="Enter voltage" step="any">
+            </div>
+
+            <div class="input-group">
+                <label>Current (I) - Amperes</label>
+                <input type="number" id="current" placeholder="Enter current" step="any">
+            </div>
+
+            <div class="input-group">
+                <label>Resistance (R) - Ohms</label>
+                <input type="number" id="resistance" placeholder="Enter resistance" step="any">
+            </div>
+
+            <div class="input-group">
+                <label>Calculate</label>
+                <select id="operation">
+                    <option value="voltage">Voltage (V = I × R)</option>
+                    <option value="current">Current (I = V ÷ R)</option>
+                    <option value="resistance">Resistance (R = V ÷ I)</option>
+                </select>
+            </div>
+
+            <button class="btn-calculate" id="calculateBtn">Calculate</button>
+
+            <div class="result-box" id="resultDisplay">
+                Result
+                <span class="sub-result">Enter two values and select what to calculate</span>
+            </div>
         </div>
 
-        <button class="btn-calc" onclick="calculateOhms()">Calculate</button>
-        <div id="result" class="result-box"></div>
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="footer-logo-img" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22%3E%3Crect width=%2236%22 height=%2236%22 rx=%228%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                    <span class="footer-logo-text">Engi<span>Calc</span> 2.0</span>
+                </div>
+                <p class="footer-text">This EngiCalc is made by <strong>AyushChatterjee</strong></p>
+                <p class="footer-text">Founder: <strong>EngiCalc2.0.com</strong></p>
+                <p class="footer-copy">© 2026 EngiCalc 2.0. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
+    <script src="../script.js"></script>
     <script>
-        function calculateOhms() {
-            let v = document.getElementById('voltage').value;
-            let i = document.getElementById('current').value;
-            let r = document.getElementById('resistance').value;
-            let resDiv = document.getElementById('result');
-            resDiv.style.display = "block";
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const V = parseFloat(document.getElementById('voltage').value);
+            const I = parseFloat(document.getElementById('current').value);
+            const R = parseFloat(document.getElementById('resistance').value);
+            const operation = document.getElementById('operation').value;
 
-            if (v === "" && i !== "" && r !== "") {
-                resDiv.innerHTML = "Voltage (V) = " + (i * r).toFixed(2) + " V";
-            } else if (i === "" && v !== "" && r !== "") {
-                resDiv.innerHTML = "Curren
+            let result, label;
+
+            switch(operation) {
+                case 'voltage':
+                    if (isNaN(I) || isNaN(R)) {
+                        document.getElementById('resultDisplay').innerHTML = '⚠️ Please enter Current and Resistance';
+                        return;
+                    }
+                    result = I * R;
+                    label = `V = ${I} × ${R} =`;
+                    break;
+                case 'current':
+                    if (isNaN(V) || isNaN(R) || R === 0) {
+                        document.getElementById('resultDisplay').innerHTML = '⚠️ Please enter Voltage and Resistance (R ≠ 0)';
+                        return;
+                    }
+                    result = V / R;
+                    label = `I = ${V} ÷ ${R} =`;
+                    break;
+                case 'resistance':
+                    if (isNaN(V) || isNaN(I) || I === 0) {
+                        document.getElementById('resultDisplay').innerHTML = '⚠️ Please enter Voltage and Current (I ≠ 0)';
+                        return;
+                    }
+                    result = V / I;
+                    label = `R = ${V} ÷ ${I} =`;
+                    break;
+            }
+
+            document.getElementById('resultDisplay').innerHTML = `
+                ${label} ${result.toFixed(4)} 
+                <span class="sub-result">${document.getElementById('operation').selectedOptions[0].text}</span>
+            `;
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('calculateBtn').click();
+            }
+        });
+    </script>
+</body>
+</html>
