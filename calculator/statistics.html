@@ -1,78 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Statistics Calculator - EngiCalc 2.0</title>
-<style>
-*{box-sizing:border-box}body{font-family:Arial;background:#f5f7fb;margin:0;color:#172033}
-header{background:#111827;color:white;text-align:center;padding:18px}header a{color:white;text-decoration:none}
-header img{width:50px;vertical-align:middle}
-.container{max-width:700px;margin:25px auto;padding:15px}.card{background:white;padding:25px;border-radius:18px;box-shadow:0 5px 20px #0001}
-textarea,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
-textarea{height:100px}button{background:#2563eb;color:white;border:0;font-weight:bold}
-.result{background:#eff6ff;padding:18px;margin-top:15px;border-radius:12px;line-height:1.9}
-</style>
+    <meta charset="UTF-8">
+    <title>Statistics - EngiCalc 2.0</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<header><a href="../index.html"><img src="../engicalc2.0-logo.png"> <b>EngiCalc 2.0</b></a></header>
-
-<div class="container"><div class="card">
-<h2>Statistics Calculator</h2>
-<p>Enter numbers separated by commas.</p>
-
-<textarea id="data" placeholder="Example: 10, 20, 30, 40, 50"></textarea>
-
-<button onclick="calculate()">Calculate</button>
-<div id="result"></div>
-</div></div>
-
-<script>
-function calculate(){
-let a=document.getElementById("data").value.split(",").map(Number).filter(Number.isFinite);
-
-if(!a.length){
-result.innerHTML='<div class="result">Please enter valid numbers.</div>';
-return;
-}
-
-let sorted=[...a].sort((x,y)=>x-y);
-let n=a.length;
-let sum=a.reduce((x,y)=>x+y,0);
-let mean=sum/n;
-
-let median=n%2?sorted[Math.floor(n/2)]:(sorted[n/2-1]+sorted[n/2])/2;
-
-let freq={};
-a.forEach(x=>freq[x]=(freq[x]||0)+1);
-let maxFreq=Math.max(...Object.values(freq));
-let modes=Object.keys(freq).filter(x=>freq[x]===maxFreq);
-
-let variance=a.reduce((s,x)=>s+(x-mean)**2,0)/n;
-let sd=Math.sqrt(variance);
-
-result.innerHTML=`<div class="result">
-<b>Count:</b> ${n}
-
-<b>Sum:</b> ${sum}
-
-<b>Mean:</b> ${mean.toFixed(4)}
-
-<b>Median:</b> ${median}
-
-<b>Mode:</b> ${maxFreq>1?modes.join(", "):"No mode"}
-
-<b>Minimum:</b> ${Math.min(...a)}
-
-<b>Maximum:</b> ${Math.max(...a)}
-
-<b>Range:</b> ${Math.max(...a)-Math.min(...a)}
-
-<b>Variance:</b> ${variance.toFixed(4)}
-
-<b>Standard Deviation:</b> ${sd.toFixed(4)}
-</div>`;
-}
-</script>
+    <header><div class="navbar"><a href="../index.html" style="text-decoration: none; color: var(--primary-blue);">← Back</a><span>Statistics</span></div></header>
+    <div style="max-width: 500px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center;">
+        <h3>Mean Calculator</h3>
+        <p>Enter numbers separated by commas (e.g. 10, 20, 30)</p>
+        <input type="text" id="statInput" style="width: 100%; padding: 12px; margin: 20px 0; border-radius: 8px; border: 1px solid #ccc; background: var(--bg-color); color: var(--text-color);">
+        <button onclick="calcStat()" style="width:100%; padding:15px; background:var(--primary-blue); color:white; border:none; border-radius:10px; cursor:pointer;">Calculate Mean</button>
+        <div id="statRes" style="font-size: 1.5rem; color: var(--primary-blue); margin-top: 20px;">Result: 0</div>
+    </div>
+    <script>
+        function calcStat() {
+            let val = document.getElementById('statInput').value;
+            let arr = val.split(',').map(Number);
+            let sum = arr.reduce((a, b) => a + b, 0);
+            let mean = sum / arr.length;
+            document.getElementById('statRes').innerText = "Mean: " + (mean || 0).toFixed(2);
+        }
+    </script>
 </body>
 </html>
