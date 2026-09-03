@@ -2,37 +2,325 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Matrix Calculator - EngiCalc 2.0</title>
     <link rel="stylesheet" href="../style.css">
     <style>
-        .matrix-grid { display: grid; grid-template-columns: 80px 80px; gap: 10px; justify-content: center; margin: 20px 0; }
-        .matrix-grid input { width: 80px; padding: 15px; text-align: center; border-radius: 8px; border: 1px solid #ccc; background: var(--bg-color); color: var(--text-color); font-size: 1.2rem; }
-        .calc-container { max-width: 500px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center; box-shadow: var(--shadow); }
-        .res-text { font-size: 1.5rem; color: var(--primary-blue); font-weight: bold; margin-top: 20px; }
+        /* ===== এই পেজের জন্য অতিরিক্ত স্টাইল ===== */
+        .tool-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tool-container h2 {
+            color: var(--text-white);
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .result-box {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .result-box .sub-result {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-calculate:active {
+            transform: scale(0.97);
+        }
+        .btn-calculate:hover {
+            opacity: 0.9;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* ম্যাট্রিক্স ইনপুটের জন্য গ্রিড */
+        .matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            margin: 10px 0;
+        }
+        .matrix-grid input {
+            width: 100%;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+            text-align: center;
+        }
+        .matrix-grid input:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .matrix-label {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            margin: 10px 0 5px 0;
+        }
     </style>
 </head>
 <body>
-    <header><div class="navbar"><a href="../index.html" style="text-decoration: none; color: var(--primary-blue);">← Back</a><span>Matrix (2x2)</span></div></header>
-    <div class="calc-container">
-        <h3>Determinant Calculator</h3>
-        <div class="matrix-grid">
-            <input type="number" id="a11" placeholder="a11">
-            <input type="number" id="a12" placeholder="a12">
-            <input type="number" id="a21" placeholder="a21">
-            <input type="number" id="a22" placeholder="a22">
+    <div class="app-container">
+
+        <!-- ===== HEADER ===== -->
+        <header class="header">
+            <div class="logo-area">
+                <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="logo-img" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                <span class="logo-text">Engi<span>Calc</span> 2.0</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
+
+        <!-- ===== BACK TO HOME BUTTON ===== -->
+        <a href="../index.html" class="back-btn">← Back to Home</a>
+
+        <!-- ===== TOOL CONTAINER ===== -->
+        <div class="tool-container">
+            <h2>∷ Matrix Calculator</h2>
+
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 15px;">
+                Enter 3x3 matrices and select operation
+            </p>
+
+            <!-- Matrix A -->
+            <div class="matrix-label">Matrix A</div>
+            <div class="matrix-grid" id="matrixA">
+                <input type="number" id="a11" value="1" step="any">
+                <input type="number" id="a12" value="2" step="any">
+                <input type="number" id="a13" value="3" step="any">
+                <input type="number" id="a21" value="4" step="any">
+                <input type="number" id="a22" value="5" step="any">
+                <input type="number" id="a23" value="6" step="any">
+                <input type="number" id="a31" value="7" step="any">
+                <input type="number" id="a32" value="8" step="any">
+                <input type="number" id="a33" value="9" step="any">
+            </div>
+
+            <!-- Matrix B -->
+            <div class="matrix-label">Matrix B</div>
+            <div class="matrix-grid" id="matrixB">
+                <input type="number" id="b11" value="9" step="any">
+                <input type="number" id="b12" value="8" step="any">
+                <input type="number" id="b13" value="7" step="any">
+                <input type="number" id="b21" value="6" step="any">
+                <input type="number" id="b22" value="5" step="any">
+                <input type="number" id="b23" value="4" step="any">
+                <input type="number" id="b31" value="3" step="any">
+                <input type="number" id="b32" value="2" step="any">
+                <input type="number" id="b33" value="1" step="any">
+            </div>
+
+            <!-- Operation Select -->
+            <div class="input-group">
+                <label>Operation</label>
+                <select id="operation">
+                    <option value="add">Addition (A + B)</option>
+                    <option value="subtract">Subtraction (A - B)</option>
+                    <option value="multiply">Multiplication (A × B)</option>
+                </select>
+            </div>
+
+            <button class="btn-calculate" id="calculateBtn">Calculate</button>
+
+            <div class="result-box" id="resultDisplay">
+                Result
+                <span class="sub-result">Enter values and click Calculate</span>
+            </div>
         </div>
-        <button class="btn-calc" style="width:100%; padding:15px; background:var(--primary-blue); color:white; border:none; border-radius:10px; cursor:pointer;" onclick="calcDet()">Calculate Determinant</button>
-        <div class="res-text" id="detRes">Result: 0</div>
+
+        <!-- ===== FOOTER WITH LOGO ===== -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="footer-logo-img" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22%3E%3Crect width=%2236%22 height=%2236%22 rx=%228%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                    <span class="footer-logo-text">Engi<span>Calc</span> 2.0</span>
+                </div>
+                <p class="footer-text">This EngiCalc is made by <strong>AyushChatterjee</strong></p>
+                <p class="footer-text">Founder: <strong>EngiCalc2.0.com</strong></p>
+                <p class="footer-copy">© 2026 EngiCalc 2.0. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
+
+    <script src="../script.js"></script>
     <script>
-        function calcDet() {
-            let a = parseFloat(document.getElementById('a11').value) || 0;
-            let b = parseFloat(document.getElementById('a12').value) || 0;
-            let c = parseFloat(document.getElementById('a21').value) || 0;
-            let d = parseFloat(document.getElementById('a22').value) || 0;
-            let det = (a * d) - (b * c);
-            document.getElementById('detRes').innerText = "Determinant: " + det;
+        // ===== MATRIX CALCULATOR LOGIC =====
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            // Read Matrix A
+            const a = [
+                [
+                    parseFloat(document.getElementById('a11').value) || 0,
+                    parseFloat(document.getElementById('a12').value) || 0,
+                    parseFloat(document.getElementById('a13').value) || 0
+                ],
+                [
+                    parseFloat(document.getElementById('a21').value) || 0,
+                    parseFloat(document.getElementById('a22').value) || 0,
+                    parseFloat(document.getElementById('a23').value) || 0
+                ],
+                [
+                    parseFloat(document.getElementById('a31').value) || 0,
+                    parseFloat(document.getElementById('a32').value) || 0,
+                    parseFloat(document.getElementById('a33').value) || 0
+                ]
+            ];
+
+            // Read Matrix B
+            const b = [
+                [
+                    parseFloat(document.getElementById('b11').value) || 0,
+                    parseFloat(document.getElementById('b12').value) || 0,
+                    parseFloat(document.getElementById('b13').value) || 0
+                ],
+                [
+                    parseFloat(document.getElementById('b21').value) || 0,
+                    parseFloat(document.getElementById('b22').value) || 0,
+                    parseFloat(document.getElementById('b23').value) || 0
+                ],
+                [
+                    parseFloat(document.getElementById('b31').value) || 0,
+                    parseFloat(document.getElementById('b32').value) || 0,
+                    parseFloat(document.getElementById('b33').value) || 0
+                ]
+            ];
+
+            const operation = document.getElementById('operation').value;
+            let result;
+
+            switch(operation) {
+                case 'add':
+                    result = matrixAdd(a, b);
+                    break;
+                case 'subtract':
+                    result = matrixSubtract(a, b);
+                    break;
+                case 'multiply':
+                    result = matrixMultiply(a, b);
+                    break;
+                default:
+                    result = a;
+            }
+
+            // Display result
+            const display = document.getElementById('resultDisplay');
+            display.innerHTML = `
+                ${formatMatrix(result)}
+                <span class="sub-result">Operation: ${document.getElementById('operation').selectedOptions[0].text}</span>
+            `;
+        });
+
+        // ===== MATRIX OPERATIONS =====
+        function matrixAdd(a, b) {
+            return a.map((row, i) => row.map((val, j) => val + b[i][j]));
         }
+
+        function matrixSubtract(a, b) {
+            return a.map((row, i) => row.map((val, j) => val - b[i][j]));
+        }
+
+        function matrixMultiply(a, b) {
+            const result = [[0,0,0], [0,0,0], [0,0,0]];
+            for (let i = 0; i < 3; i++) {
+                for (let j = 0; j < 3; j++) {
+                    for (let k = 0; k < 3; k++) {
+                        result[i][j] += a[i][k] * b[k][j];
+                    }
+                }
+            }
+            return result;
+        }
+
+        function formatMatrix(matrix) {
+            return matrix.map(row => 
+                row.map(val => val.toFixed(2)).join('  ')
+            ).join('<br>');
+        }
+
+        // Enter key support
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('calculateBtn').click();
+            }
+        });
     </script>
 </body>
 </html>
