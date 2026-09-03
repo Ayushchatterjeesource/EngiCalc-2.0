@@ -8,10 +8,11 @@
 </head>
 <body>
     <div class="app-container">
-        <!-- Header -->
+        <!-- ===== HEADER ===== -->
         <header class="header">
             <div class="logo-area">
-                <img src="engicalc2.0-logo.png" alt="Logo" class="logo-img" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                <img src="engicalc2.0-logo.png" alt="EngiCalc Logo" class="logo-img" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
                 <span class="logo-text">Engi<span>Calc</span> 2.0</span>
             </div>
             <div style="display:flex; gap:8px; align-items:center;">
@@ -20,11 +21,14 @@
             </div>
         </header>
 
-        <!-- Scientific Calculator -->
+        <!-- ===== SCIENTIFIC CALCULATOR ===== -->
         <div class="calc-card" id="calcCard">
             <div class="calc-title">
                 <span>🔬 Scientific Calculator</span>
-                <span class="badge">Main</span>
+                <div style="display:flex; gap:8px; align-items:center;">
+                    <span class="badge">Main</span>
+                    <button class="btn-history-icon" id="historyToggle" title="History">📜</button>
+                </div>
             </div>
 
             <!-- Display -->
@@ -33,55 +37,38 @@
                 <div class="result" id="result">0</div>
             </div>
 
-            <!-- History Controls -->
-            <div style="display:flex; gap:8px; margin-bottom:10px;">
-                <button class="btn btn-history" id="historyToggle">📜 History</button>
-                <button class="btn btn-clear" id="clearHistoryBtn">🗑</button>
-            </div>
-
-            <!-- History Panel -->
-            <div class="history-panel" id="historyPanel">
-                <div id="historyList"></div>
-            </div>
-
-            <!-- Button Grid - Professional Layout -->
+            <!-- Button Grid -->
             <div class="btn-grid">
-                <!-- Row 1: Functions -->
                 <button class="btn btn-function" data-value="sin(">sin</button>
                 <button class="btn btn-function" data-value="cos(">cos</button>
                 <button class="btn btn-function" data-value="tan(">tan</button>
                 <button class="btn btn-function" data-value="log(">log</button>
                 <button class="btn btn-function" data-value="ln(">ln</button>
 
-                <!-- Row 2: More Functions -->
                 <button class="btn btn-function" data-value="√(">√</button>
                 <button class="btn btn-function" data-value="²">x²</button>
                 <button class="btn btn-function" data-value="³">x³</button>
                 <button class="btn btn-function" data-value="π">π</button>
                 <button class="btn btn-function" data-value="e">e</button>
 
-                <!-- Row 3: Clear & Parentheses -->
                 <button class="btn btn-clear" data-value="clear">C</button>
                 <button class="btn btn-operator" data-value="(">(</button>
                 <button class="btn btn-operator" data-value=")">)</button>
                 <button class="btn btn-operator" data-value="%">%</button>
                 <button class="btn btn-operator" data-value="/">÷</button>
 
-                <!-- Row 4: Numbers 7-9 & Operators -->
                 <button class="btn btn-number" data-value="7">7</button>
                 <button class="btn btn-number" data-value="8">8</button>
                 <button class="btn btn-number" data-value="9">9</button>
                 <button class="btn btn-operator" data-value="*">×</button>
                 <button class="btn btn-operator" data-value="-">−</button>
 
-                <!-- Row 5: Numbers 4-6 & Operators -->
                 <button class="btn btn-number" data-value="4">4</button>
                 <button class="btn btn-number" data-value="5">5</button>
                 <button class="btn btn-number" data-value="6">6</button>
                 <button class="btn btn-operator" data-value="+">+</button>
                 <button class="btn btn-equals" data-value="=">=</button>
 
-                <!-- Row 6: Numbers 1-3 & Zero -->
                 <button class="btn btn-number" data-value="1">1</button>
                 <button class="btn btn-number" data-value="2">2</button>
                 <button class="btn btn-number" data-value="3">3</button>
@@ -90,7 +77,7 @@
             </div>
         </div>
 
-        <!-- All Calculators -->
+        <!-- ===== ALL CALCULATORS ===== -->
         <div class="tools-section">
             <h3>🧮 All Calculators</h3>
             <div class="tool-grid">
@@ -129,23 +116,44 @@
             </div>
         </div>
 
-        <!-- Footer -->
+        <!-- ===== FOOTER WITH LOGO ===== -->
         <footer class="footer">
-            ⚙️ <strong>EngiCalc 2.0</strong><br>
-            Made with ❤️ by AyushChatterjee<br>
-            © 2026 EngiCalc 2.0. All rights reserved.
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="engicalc2.0-logo.png" alt="EngiCalc Logo" class="footer-logo-img" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22%3E%3Crect width=%2236%22 height=%2236%22 rx=%228%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                    <span class="footer-logo-text">Engi<span>Calc</span> 2.0</span>
+                </div>
+                <p class="footer-text">This EngiCalc is made by <strong>AyushChatterjee</strong></p>
+                <p class="footer-text">Founder: <strong>EngiCalc2.0.com</strong></p>
+                <p class="footer-copy">© 2026 EngiCalc 2.0. All rights reserved.</p>
+            </div>
         </footer>
+    </div>
+
+    <!-- ===== HISTORY SIDEBAR ===== -->
+    <div class="history-overlay" id="historyOverlay"></div>
+    <div class="history-sidebar" id="historySidebar">
+        <div class="history-header">
+            <span>📜 History</span>
+            <button class="history-close" id="historyClose">✕</button>
+        </div>
+        <div class="history-body" id="historyList">
+            <div class="empty-history">No history yet</div>
+        </div>
+        <div class="history-footer">
+            <button class="btn-clear-history" id="clearHistoryBtn">🗑 Clear All</button>
+        </div>
     </div>
 
     <script src="script.js"></script>
     <script>
-        // ===== FULL SCREEN FUNCTIONALITY =====
+        // ===== FULL SCREEN =====
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         const calcCard = document.getElementById('calcCard');
 
         fullscreenBtn.addEventListener('click', function() {
             if (!document.fullscreenElement) {
-                // Enter fullscreen
                 if (calcCard.requestFullscreen) {
                     calcCard.requestFullscreen();
                 } else if (calcCard.webkitRequestFullscreen) {
@@ -153,10 +161,8 @@
                 } else if (calcCard.msRequestFullscreen) {
                     calcCard.msRequestFullscreen();
                 }
-                fullscreenBtn.textContent = '⛶';
                 fullscreenBtn.style.background = '#22d3ee';
             } else {
-                // Exit fullscreen
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
                 } else if (document.webkitExitFullscreen) {
@@ -164,158 +170,160 @@
                 } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
-                fullscreenBtn.textContent = '⛶';
                 fullscreenBtn.style.background = '';
             }
         });
 
-        // Update fullscreen button on exit
         document.addEventListener('fullscreenchange', function() {
             if (!document.fullscreenElement) {
-                fullscreenBtn.textContent = '⛶';
                 fullscreenBtn.style.background = '';
             }
         });
 
+        // ===== HISTORY SIDEBAR =====
+        const historySidebar = document.getElementById('historySidebar');
+        const historyOverlay = document.getElementById('historyOverlay');
+        const historyToggleBtn = document.getElementById('historyToggle');
+        const historyCloseBtn = document.getElementById('historyClose');
+        const historyList = document.getElementById('historyList');
+
+        function openHistory() {
+            historySidebar.classList.add('open');
+            historyOverlay.classList.add('active');
+            updateHistoryUI();
+        }
+
+        function closeHistory() {
+            historySidebar.classList.remove('open');
+            historyOverlay.classList.remove('active');
+        }
+
+        historyToggleBtn.addEventListener('click', openHistory);
+        historyCloseBtn.addEventListener('click', closeHistory);
+        historyOverlay.addEventListener('click', closeHistory);
+
         // ===== CALCULATOR LOGIC =====
-        (function() {
-            const displayExpr = document.getElementById('expression');
-            const displayResult = document.getElementById('result');
-            const historyList = document.getElementById('historyList');
-            const historyPanel = document.getElementById('historyPanel');
-            const historyToggle = document.getElementById('historyToggle');
-            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const displayExpr = document.getElementById('expression');
+        const displayResult = document.getElementById('result');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
-            let currentExpression = '';
-            let history = JSON.parse(localStorage.getItem('engicalc_history')) || [];
-            let isResultShown = false;
+        let currentExpression = '';
+        let history = JSON.parse(localStorage.getItem('engicalc_history')) || [];
+        let isResultShown = false;
 
-            function updateHistoryUI() {
-                historyList.innerHTML = '';
-                if (history.length === 0) {
-                    historyList.innerHTML = '<div class="empty-history">No history yet</div>';
-                    return;
-                }
-                const reversed = [...history].reverse();
-                reversed.forEach(entry => {
-                    const div = document.createElement('div');
-                    div.className = 'h-entry';
-                    div.innerHTML = `<span class="h-expr">${escapeHtml(entry.expr)}</span><span class="h-result">= ${escapeHtml(entry.result)}</span>`;
-                    historyList.appendChild(div);
-                });
+        function updateHistoryUI() {
+            historyList.innerHTML = '';
+            if (history.length === 0) {
+                historyList.innerHTML = '<div class="empty-history">No history yet</div>';
+                return;
             }
-
-            function escapeHtml(text) {
+            const reversed = [...history].reverse();
+            reversed.forEach(entry => {
                 const div = document.createElement('div');
-                div.textContent = text;
-                return div.innerHTML;
-            }
+                div.className = 'h-entry';
+                div.innerHTML = `<span class="h-expr">${escapeHtml(entry.expr)}</span><span class="h-result">= ${escapeHtml(entry.result)}</span>`;
+                historyList.appendChild(div);
+            });
+        }
 
-            function saveHistory(expr, result) {
-                history.push({ expr: expr, result: result });
-                if (history.length > 50) history.shift();
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function saveHistory(expr, result) {
+            history.push({ expr: expr, result: result });
+            if (history.length > 50) history.shift();
+            localStorage.setItem('engicalc_history', JSON.stringify(history));
+        }
+
+        clearHistoryBtn.addEventListener('click', function() {
+            if (confirm('Clear all history?')) {
+                history = [];
                 localStorage.setItem('engicalc_history', JSON.stringify(history));
                 updateHistoryUI();
             }
+        });
 
-            let historyOpen = false;
-            historyToggle.addEventListener('click', function() {
-                historyOpen = !historyOpen;
-                historyPanel.classList.toggle('open', historyOpen);
-                historyToggle.textContent = historyOpen ? '📜 Hide History' : '📜 History';
-                if (historyOpen) updateHistoryUI();
-            });
-
-            clearHistoryBtn.addEventListener('click', function() {
-                if (confirm('Clear all history?')) {
-                    history = [];
-                    localStorage.setItem('engicalc_history', JSON.stringify(history));
-                    updateHistoryUI();
-                    if (historyOpen) {
-                        historyList.innerHTML = '<div class="empty-history">No history yet</div>';
-                    }
-                }
-            });
-
-            function evaluateExpression(expr) {
-                if (!expr || expr.trim() === '') return 0;
-                let sanitized = expr
-                    .replace(/sin\(/g, 'Math.sin(')
-                    .replace(/cos\(/g, 'Math.cos(')
-                    .replace(/tan\(/g, 'Math.tan(')
-                    .replace(/log\(/g, 'Math.log10(')
-                    .replace(/ln\(/g, 'Math.log(')
-                    .replace(/√\(/g, 'Math.sqrt(')
-                    .replace(/π/g, 'Math.PI')
-                    .replace(/e(?![xp])/g, 'Math.E')
-                    .replace(/²/g, '**2')
-                    .replace(/³/g, '**3');
-                try {
-                    const result = Function('"use strict"; return (' + sanitized + ')')();
-                    return result;
-                } catch (e) {
-                    return 'Error';
-                }
+        function evaluateExpression(expr) {
+            if (!expr || expr.trim() === '') return 0;
+            let sanitized = expr
+                .replace(/sin\(/g, 'Math.sin(')
+                .replace(/cos\(/g, 'Math.cos(')
+                .replace(/tan\(/g, 'Math.tan(')
+                .replace(/log\(/g, 'Math.log10(')
+                .replace(/ln\(/g, 'Math.log(')
+                .replace(/√\(/g, 'Math.sqrt(')
+                .replace(/π/g, 'Math.PI')
+                .replace(/e(?![xp])/g, 'Math.E')
+                .replace(/²/g, '**2')
+                .replace(/³/g, '**3');
+            try {
+                const result = Function('"use strict"; return (' + sanitized + ')')();
+                return result;
+            } catch (e) {
+                return 'Error';
             }
+        }
 
-            function updateDisplay() {
-                displayExpr.textContent = currentExpression || '\u200B';
-                if (currentExpression.trim() === '') {
-                    displayResult.textContent = '0';
+        function updateDisplay() {
+            displayExpr.textContent = currentExpression || '\u200B';
+            if (currentExpression.trim() === '') {
+                displayResult.textContent = '0';
+                return;
+            }
+            const result = evaluateExpression(currentExpression);
+            if (result !== undefined && !isNaN(result) && isFinite(result)) {
+                displayResult.textContent = result;
+            } else {
+                displayResult.textContent = 'Error';
+            }
+        }
+
+        document.querySelectorAll('.btn[data-value]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const value = this.dataset.value;
+                if (value === 'clear') {
+                    currentExpression = '';
+                    isResultShown = false;
+                    updateDisplay();
                     return;
                 }
-                const result = evaluateExpression(currentExpression);
-                if (result !== undefined && !isNaN(result) && isFinite(result)) {
-                    displayResult.textContent = result;
-                } else {
-                    displayResult.textContent = 'Error';
-                }
-            }
-
-            document.querySelectorAll('.btn[data-value]').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const value = this.dataset.value;
-                    if (value === 'clear') {
-                        currentExpression = '';
-                        isResultShown = false;
+                if (value === '=') {
+                    if (currentExpression.trim() === '') return;
+                    const result = evaluateExpression(currentExpression);
+                    if (result !== undefined && !isNaN(result) && isFinite(result)) {
+                        const resultStr = String(result);
+                        saveHistory(currentExpression, resultStr);
+                        currentExpression = resultStr;
+                        isResultShown = true;
                         updateDisplay();
-                        return;
                     }
-                    if (value === '=') {
-                        if (currentExpression.trim() === '') return;
-                        const result = evaluateExpression(currentExpression);
-                        if (result !== undefined && !isNaN(result) && isFinite(result)) {
-                            const resultStr = String(result);
-                            saveHistory(currentExpression, resultStr);
-                            currentExpression = resultStr;
-                            isResultShown = true;
-                            updateDisplay();
-                        }
-                        return;
+                    return;
+                }
+                if (isResultShown) {
+                    if (!['+', '-', '*', '/', '%', '(', ')'].includes(value)) {
+                        currentExpression = '';
                     }
-                    if (isResultShown) {
-                        if (!['+', '-', '*', '/', '%', '(', ')'].includes(value)) {
-                            currentExpression = '';
-                        }
-                        isResultShown = false;
-                    }
-                    currentExpression += value;
-                    updateDisplay();
-                });
+                    isResultShown = false;
+                }
+                currentExpression += value;
+                updateDisplay();
             });
+        });
 
-            document.addEventListener('keydown', function(e) {
-                const key = e.key;
-                if (key === 'Enter') { document.querySelector('[data-value="="]').click(); e.preventDefault(); return; }
-                if (key === 'Backspace') { currentExpression = currentExpression.slice(0, -1); isResultShown = false; updateDisplay(); e.preventDefault(); return; }
-                if (key === 'Escape') { document.querySelector('[data-value="clear"]').click(); e.preventDefault(); return; }
-                const validKeys = '0123456789+-*/().%';
-                if (validKeys.includes(key)) { document.querySelector(`[data-value="${key}"]`)?.click(); e.preventDefault(); }
-            });
+        document.addEventListener('keydown', function(e) {
+            const key = e.key;
+            if (key === 'Enter') { document.querySelector('[data-value="="]').click(); e.preventDefault(); return; }
+            if (key === 'Backspace') { currentExpression = currentExpression.slice(0, -1); isResultShown = false; updateDisplay(); e.preventDefault(); return; }
+            if (key === 'Escape') { document.querySelector('[data-value="clear"]').click(); e.preventDefault(); return; }
+            const validKeys = '0123456789+-*/().%';
+            if (validKeys.includes(key)) { document.querySelector(`[data-value="${key}"]`)?.click(); e.preventDefault(); }
+        });
 
-            updateDisplay();
-            updateHistoryUI();
-        })();
+        updateDisplay();
+        updateHistoryUI();
     </script>
 </body>
 </html>
