@@ -2,48 +2,476 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Unit Converter - EngiCalc 2.0</title>
     <link rel="stylesheet" href="../style.css">
     <style>
-        .calc-container { max-width: 500px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center; }
-        select, input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ddd; background: var(--bg-color); color: var(--text-color); }
-        .result { font-size: 1.8rem; color: var(--primary-blue); margin-top: 20px; font-weight: bold; }
+        .tool-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tool-container h2 {
+            color: var(--text-white);
+            margin-bottom: 18px;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tool-container h2 .badge {
+            font-size: 12px;
+            background: var(--accent-purple);
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .result-box {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .result-box .sub-result {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .result-box .result-main {
+            font-size: 28px;
+        }
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-calculate:active {
+            transform: scale(0.97);
+        }
+        .btn-calculate:hover {
+            opacity: 0.9;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+            float: right;
+        }
+        .back-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+        .conversion-info {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 8px;
+            padding: 8px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+        .conversion-info strong {
+            color: var(--accent-cyan);
+        }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        .unit-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        /* Swap button */
+        .swap-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            color: var(--accent-cyan);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 5px auto;
+            transition: all 0.2s;
+        }
+        .swap-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+        }
+        .swap-btn:active {
+            transform: scale(0.9);
+        }
+        .result-extra {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .result-extra .extra-item {
+            background: var(--bg-card);
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+        .result-extra .extra-item .elabel {
+            color: var(--text-secondary);
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        .result-extra .extra-item .evalue {
+            color: var(--accent-cyan);
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .quick-conversions {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-top: 10px;
+        }
+        .quick-conversions .qc-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-sm);
+            padding: 8px 4px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .quick-conversions .qc-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+        .quick-conversions .qc-btn:active {
+            transform: scale(0.95);
+        }
     </style>
 </head>
 <body>
-    <header><div class="navbar"><a href="../index.html" class="back-btn">← Back</a><span>Unit Converter</span></div></header>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="logo-img" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                <span class="logo-text">Engi<span>Calc</span> 2.0</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
 
-    <div class="calc-container">
-        <h3>Length Converter</h3>
-        <input type="number" id="inputValue" placeholder="Enter Value" oninput="convert()">
-        <select id="fromUnit" onchange="convert()">
-            <option value="m">Meter (m)</option>
-            <option value="km">Kilometer (km)</option>
-            <option value="feet">Feet</option>
-            <option value="inch">Inch</option>
-        </select>
-        <p>to</p>
-        <select id="toUnit" onchange="convert()">
-            <option value="m">Meter (m)</option>
-            <option value="km">Kilometer (km)</option>
-            <option value="feet">Feet</option>
-            <option value="inch">Inch</option>
-        </select>
-        <div class="result" id="unitResult">0</div>
+        <!-- Back to Home - Right Side -->
+        <div class="clearfix">
+            <a href="../index.html" class="back-btn">← Back to Home</a>
+        </div>
+
+        <div class="tool-container">
+            <h2>
+                ⇄ Unit Converter
+                <span class="badge">All Units</span>
+            </h2>
+
+            <div class="input-group">
+                <label>Category</label>
+                <select id="category">
+                    <option value="length">📏 Length</option>
+                    <option value="mass">⚖️ Mass / Weight</option>
+                    <option value="temperature">🌡️ Temperature</option>
+                    <option value="area">📐 Area</option>
+                    <option value="volume">🧊 Volume</option>
+                    <option value="speed">🚀 Speed</option>
+                    <option value="time">⏱️ Time</option>
+                    <option value="pressure">💨 Pressure</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Value</label>
+                <input type="number" id="value" value="1" step="any">
+            </div>
+
+            <div class="unit-grid">
+                <div class="input-group">
+                    <label>From</label>
+                    <select id="fromUnit"></select>
+                </div>
+                <div class="input-group">
+                    <label>To</label>
+                    <select id="toUnit"></select>
+                </div>
+            </div>
+
+            <!-- Swap Button -->
+            <button class="swap-btn" id="swapBtn" title="Swap Units">⇄</button>
+
+            <button class="btn-calculate" id="calculateBtn">Convert</button>
+
+            <div class="result-box" id="resultDisplay">
+                <div class="result-main">Result</div>
+                <span class="sub-result">Select category and enter value</span>
+            </div>
+
+            <!-- Quick Conversions -->
+            <div class="quick-conversions" id="quickConversions">
+                <button class="qc-btn" data-value="1">1</button>
+                <button class="qc-btn" data-value="10">10</button>
+                <button class="qc-btn" data-value="100">100</button>
+                <button class="qc-btn" data-value="1000">1000</button>
+                <button class="qc-btn" data-value="0.5">0.5</button>
+                <button class="qc-btn" data-value="2">2</button>
+            </div>
+
+            <div class="conversion-info" id="conversionInfo">
+                💡 Enter a value and select units to convert
+            </div>
+        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="footer-logo-img" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22%3E%3Crect width=%2236%22 height=%2236%22 rx=%228%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                    <span class="footer-logo-text">Engi<span>Calc</span> 2.0</span>
+                </div>
+                <p class="footer-text">This EngiCalc is made by <strong>AyushChatterjee</strong></p>
+                <p class="footer-text">Founder: <strong>EngiCalc2.0.com</strong></p>
+                <p class="footer-copy">© 2026 EngiCalc 2.0. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
 
+    <script src="../script.js"></script>
     <script>
-        function convert() {
-            let val = document.getElementById('inputValue').value;
-            let from = document.getElementById('fromUnit').value;
-            let to = document.getElementById('toUnit').value;
-            
-            // Basic Meter Conversion Table
-            let factors = { m: 1, km: 1000, feet: 0.3048, inch: 0.0254 };
-            let result = (val * factors[from]) / factors[to];
-            document.getElementById('unitResult').innerHTML = result.toFixed(4);
+        // ===== CONVERSION DATA =====
+        const conversions = {
+            length: {
+                units: ['Meter', 'Kilometer', 'Centimeter', 'Millimeter', 'Micrometer', 'Nanometer', 'Mile', 'Yard', 'Foot', 'Inch', 'Nautical Mile'],
+                toBase: [1, 1000, 0.01, 0.001, 0.000001, 1e-9, 1609.344, 0.9144, 0.3048, 0.0254, 1852]
+            },
+            mass: {
+                units: ['Kilogram', 'Gram', 'Milligram', 'Microgram', 'Pound', 'Ounce', 'Ton (metric)', 'Ton (US)', 'Stone'],
+                toBase: [1, 0.001, 0.000001, 1e-9, 0.453592, 0.0283495, 1000, 907.185, 6.35029]
+            },
+            temperature: {
+                units: ['Celsius', 'Fahrenheit', 'Kelvin', 'Rankine'],
+                toBase: null
+            },
+            area: {
+                units: ['Square Meter', 'Square Kilometer', 'Square Centimeter', 'Square Millimeter', 'Square Mile', 'Square Yard', 'Square Foot', 'Square Inch', 'Hectare', 'Acre'],
+                toBase: [1, 1000000, 0.0001, 0.000001, 2589988.11, 0.836127, 0.092903, 0.00064516, 10000, 4046.86]
+            },
+            volume: {
+                units: ['Cubic Meter', 'Cubic Kilometer', 'Cubic Centimeter', 'Cubic Millimeter', 'Liter', 'Milliliter', 'Gallon (US)', 'Gallon (UK)', 'Cubic Foot', 'Cubic Inch', 'Fluid Ounce (US)'],
+                toBase: [1, 1e9, 0.000001, 1e-9, 0.001, 0.000001, 0.00378541, 0.00454609, 0.0283168, 0.0000163871, 0.0000295735]
+            },
+            speed: {
+                units: ['Meter/Second', 'Kilometer/Hour', 'Mile/Hour', 'Knot', 'Foot/Second', 'Mach (sea level)'],
+                toBase: [1, 0.277778, 0.44704, 0.514444, 0.3048, 340.3]
+            },
+            time: {
+                units: ['Second', 'Millisecond', 'Microsecond', 'Minute', 'Hour', 'Day', 'Week', 'Month (30 days)', 'Year (365 days)'],
+                toBase: [1, 0.001, 0.000001, 60, 3600, 86400, 604800, 2592000, 31536000]
+            },
+            pressure: {
+                units: ['Pascal', 'Kilopascal', 'Megapascal', 'Bar', 'Millibar', 'PSI', 'Atmosphere', 'Torr', 'mmHg'],
+                toBase: [1, 1000, 1000000, 100000, 100, 6894.76, 101325, 133.322, 133.322]
+            }
+        };
+
+        // ===== POPULATE UNITS =====
+        const categorySelect = document.getElementById('category');
+        const fromUnitSelect = document.getElementById('fromUnit');
+        const toUnitSelect = document.getElementById('toUnit');
+
+        function populateUnits() {
+            const category = categorySelect.value;
+            const data = conversions[category];
+            if (!data) return;
+
+            fromUnitSelect.innerHTML = '';
+            toUnitSelect.innerHTML = '';
+
+            data.units.forEach(unit => {
+                const opt1 = document.createElement('option');
+                opt1.value = unit;
+                opt1.textContent = unit;
+                fromUnitSelect.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = unit;
+                opt2.textContent = unit;
+                toUnitSelect.appendChild(opt2);
+            });
+
+            if (data.units.length >= 2) {
+                fromUnitSelect.value = data.units[0];
+                toUnitSelect.value = data.units[data.units.length - 1];
+            }
         }
+
+        categorySelect.addEventListener('change', populateUnits);
+        populateUnits();
+
+        // ===== SWAP UNITS =====
+        document.getElementById('swapBtn').addEventListener('click', function() {
+            const fromVal = fromUnitSelect.value;
+            const toVal = toUnitSelect.value;
+            fromUnitSelect.value = toVal;
+            toUnitSelect.value = fromVal;
+            document.getElementById('calculateBtn').click();
+        });
+
+        // ===== QUICK CONVERSIONS =====
+        document.querySelectorAll('.qc-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.getElementById('value').value = this.dataset.value;
+                document.getElementById('calculateBtn').click();
+            });
+        });
+
+        // ===== CONVERT FUNCTION =====
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const category = categorySelect.value;
+            const value = parseFloat(document.getElementById('value').value);
+            const fromUnit = fromUnitSelect.value;
+            const toUnit = toUnitSelect.value;
+
+            if (isNaN(value)) {
+                document.getElementById('resultDisplay').innerHTML = '⚠️ Please enter a valid number';
+                return;
+            }
+
+            const data = conversions[category];
+            let result, extra = '';
+
+            if (category === 'temperature') {
+                result = convertTemperature(value, fromUnit, toUnit);
+                const celsius = convertTemperature(value, fromUnit, 'Celsius');
+                const fahrenheit = convertTemperature(value, fromUnit, 'Fahrenheit');
+                const kelvin = convertTemperature(value, fromUnit, 'Kelvin');
+                extra = `
+                    <div class="result-extra">
+                        <div class="extra-item"><span class="elabel">Celsius</span><div class="evalue">${celsius.toFixed(2)}°C</div></div>
+                        <div class="extra-item"><span class="elabel">Fahrenheit</span><div class="evalue">${fahrenheit.toFixed(2)}°F</div></div>
+                        <div class="extra-item"><span class="elabel">Kelvin</span><div class="evalue">${kelvin.toFixed(2)}K</div></div>
+                    </div>
+                `;
+            } else {
+                const fromIndex = data.units.indexOf(fromUnit);
+                const toIndex = data.units.indexOf(toUnit);
+                const baseValue = value * data.toBase[fromIndex];
+                result = baseValue / data.toBase[toIndex];
+                
+                // Show conversion factor
+                const factor = data.toBase[fromIndex] / data.toBase[toIndex];
+                extra = `
+                    <div class="result-extra">
+                        <div class="extra-item"><span class="elabel">Conversion Factor</span><div class="evalue">1 ${fromUnit} = ${factor.toFixed(6)} ${toUnit}</div></div>
+                        <div class="extra-item"><span class="elabel">Base Unit</span><div class="evalue">${baseValue.toFixed(6)} ${data.units[0]}</div></div>
+                        <div class="extra-item"><span class="elabel">Result</span><div class="evalue">${result.toFixed(6)} ${toUnit}</div></div>
+                    </div>
+                `;
+            }
+
+            document.getElementById('resultDisplay').innerHTML = `
+                <div class="result-main">${result.toFixed(6)} ${toUnit}</div>
+                ${extra}
+                <span class="sub-result">${value} ${fromUnit} = ${result.toFixed(6)} ${toUnit}</span>
+            `;
+
+            document.getElementById('conversionInfo').innerHTML = 
+                `✅ ${value} ${fromUnit} = ${result.toFixed(6)} ${toUnit}`;
+        });
+
+        function convertTemperature(value, from, to) {
+            let celsius;
+            if (from === 'Celsius') celsius = value;
+            else if (from === 'Fahrenheit') celsius = (value - 32) * 5/9;
+            else if (from === 'Kelvin') celsius = value - 273.15;
+            else if (from === 'Rankine') celsius = (value - 491.67) * 5/9;
+
+            if (to === 'Celsius') return celsius;
+            else if (to === 'Fahrenheit') return celsius * 9/5 + 32;
+            else if (to === 'Kelvin') return celsius + 273.15;
+            else if (to === 'Rankine') return (celsius + 273.15) * 9/5;
+            return value;
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('calculateBtn').click();
+            }
+        });
+
+        // Initial calculation
+        document.getElementById('calculateBtn').click();
     </script>
 </body>
 </html>
