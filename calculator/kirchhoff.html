@@ -1,75 +1,267 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kirchhoff Calculator - EngiCalc 2.0</title>
-<style>
-*{box-sizing:border-box}body{font-family:Arial;background:#f5f7fb;margin:0;color:#172033}
-header{background:#111827;color:white;text-align:center;padding:18px}header a{color:white;text-decoration:none}
-header img{width:50px;vertical-align:middle}
-.container{max-width:700px;margin:25px auto;padding:15px}.card{background:white;padding:25px;border-radius:18px;box-shadow:0 5px 20px #0001}
-input,select,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
-button{background:#2563eb;color:white;border:0;font-weight:bold}.result{background:#eff6ff;padding:18px;margin-top:15px;border-radius:12px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kirchhoff's Law Calculator - EngiCalc 2.0</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .tool-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tool-container h2 {
+            color: var(--text-white);
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .result-box {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .result-box .sub-result {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-calculate:active {
+            transform: scale(0.97);
+        }
+        .btn-calculate:hover {
+            opacity: 0.9;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+        .formula-hint {
+            color: var(--text-secondary);
+            font-size: 13px;
+            text-align: center;
+            margin: 10px 0;
+            padding: 10px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+        }
+        .formula-hint strong {
+            color: var(--accent-cyan);
+        }
+        .current-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+        }
+        .current-grid input {
+            width: 100%;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+            text-align: center;
+        }
+        .current-grid input:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .current-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<header><a href="../index.html"><img src="../engicalc2.0-logo.png"> <b>EngiCalc 2.0</b></a></header>
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="logo-img" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                <span class="logo-text">Engi<span>Calc</span> 2.0</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
 
-<div class="container"><div class="card">
-<h2>Kirchhoff's Law Calculator</h2>
+        <a href="../index.html" class="back-btn">← Back to Home</a>
 
-<select id="law">
-<option value="kcl">KCL - Current Law</option>
-<option value="kvl">KVL - Voltage Law</option>
-</select>
+        <div class="tool-container">
+            <h2>⚡ Kirchhoff's Law Calculator</h2>
 
-<p>Enter values separated by commas.</p>
+            <div class="formula-hint">
+                <strong>KCL:</strong> ΣI<sub>in</sub> = ΣI<sub>out</sub> &nbsp;|&nbsp; <strong>KVL:</strong> ΣV = 0
+            </div>
 
-<input id="values" placeholder="Example: 2, 3, 5">
+            <div class="input-group">
+                <label>Kirchhoff's Current Law (KCL)</label>
+                <div class="current-grid">
+                    <div>
+                        <div class="current-label">I₁ (in)</div>
+                        <input type="number" id="i1" value="5" step="any">
+                    </div>
+                    <div>
+                        <div class="current-label">I₂ (in)</div>
+                        <input type="number" id="i2" value="3" step="any">
+                    </div>
+                    <div>
+                        <div class="current-label">I₃ (out)</div>
+                        <input type="number" id="i3" placeholder="?" step="any">
+                    </div>
+                </div>
+            </div>
 
-<select id="sign">
-<option value="sum">Calculate total</option>
-<option value="balance">Calculate balance</option>
-</select>
+            <div class="input-group">
+                <label>Calculate Missing Current (I₃)</label>
+                <button class="btn-calculate" id="kclBtn" style="margin-top:0;">Calculate I₃</button>
+            </div>
 
-<button onclick="calculate()">Calculate</button>
-<div id="result"></div>
-</div></div>
+            <div class="result-box" id="kclResult">
+                I₃ = ?
+                <span class="sub-result">Enter I₁ and I₂ to find I₃</span>
+            </div>
 
-<script>
-function calculate(){
-let law=document.getElementById("law").value;
-let vals=document.getElementById("values").value.split(",").map(Number).filter(Number.isFinite);
-let total=vals.reduce((a,b)=>a+b,0);
+            <hr style="border-color: var(--border-color); margin: 20px 0;">
 
-if(!vals.length){
-result.innerHTML='<div class="result">Please enter valid numbers.</div>';
-return;
-}
+            <div class="input-group">
+                <label>Kirchhoff's Voltage Law (KVL)</label>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+                    <input type="number" id="v1" placeholder="V₁" step="any" value="12">
+                    <input type="number" id="v2" placeholder="V₂" step="any" value="5">
+                    <input type="number" id="v3" placeholder="V₃" step="any">
+                </div>
+            </div>
 
-if(law==="kcl"){
-result.innerHTML=`<div class="result">
-<b>KCL:</b> Sum of currents at a node = 0
+            <div class="input-group">
+                <label>Calculate Missing Voltage (V₃)</label>
+                <button class="btn-calculate" id="kvlBtn" style="margin-top:0;">Calculate V₃</button>
+            </div>
 
-Entered currents: ${vals.join(", ")}
+            <div class="result-box" id="kvlResult">
+                V₃ = ?
+                <span class="sub-result">Enter V₁ and V₂ to find V₃ (ΣV = 0)</span>
+            </div>
+        </div>
 
-Magnitude total = ${total}
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="footer-logo-img" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22%3E%3Crect width=%2236%22 height=%2236%22 rx=%228%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                    <span class="footer-logo-text">Engi<span>Calc</span> 2.0</span>
+                </div>
+                <p class="footer-text">This EngiCalc is made by <strong>AyushChatterjee</strong></p>
+                <p class="footer-text">Founder: <strong>EngiCalc2.0.com</strong></p>
+                <p class="footer-copy">© 2026 EngiCalc 2.0. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
 
-For a complete KCL equation, assign incoming currents positive and outgoing currents negative.
-</div>`;
-}else{
-result.innerHTML=`<div class="result">
-<b>KVL:</b> Sum of voltages around a closed loop = 0
+    <script src="../script.js"></script>
+    <script>
+        // KCL: I1 + I2 = I3
+        document.getElementById('kclBtn').addEventListener('click', function() {
+            const i1 = parseFloat(document.getElementById('i1').value) || 0;
+            const i2 = parseFloat(document.getElementById('i2').value) || 0;
+            const i3 = i1 + i2;
+            document.getElementById('kclResult').innerHTML = `
+                I₃ = ${i3.toFixed(4)} A
+                <span class="sub-result">I₁ + I₂ = ${i1} + ${i2} = ${i3.toFixed(4)}</span>
+            `;
+            document.getElementById('i3').value = i3.toFixed(4);
+        });
 
-Entered voltages: ${vals.join(", ")}
+        // KVL: V1 + V2 + V3 = 0 => V3 = -(V1 + V2)
+        document.getElementById('kvlBtn').addEventListener('click', function() {
+            const v1 = parseFloat(document.getElementById('v1').value) || 0;
+            const v2 = parseFloat(document.getElementById('v2').value) || 0;
+            const v3 = -(v1 + v2);
+            document.getElementById('kvlResult').innerHTML = `
+                V₃ = ${v3.toFixed(4)} V
+                <span class="sub-result">V₁ + V₂ + V₃ = 0 → ${v1} + ${v2} + ${v3.toFixed(4)} = 0</span>
+            `;
+            document.getElementById('v3').value = v3.toFixed(4);
+        });
 
-Algebraic sum = ${total}
-
-For a complete KVL equation, assign voltage rises positive and drops negative.
-</div>`;
-}
-}
-</script>
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                if (document.activeElement.id === 'i1' || document.activeElement.id === 'i2' || document.activeElement.id === 'i3') {
+                    document.getElementById('kclBtn').click();
+                } else if (document.activeElement.id === 'v1' || document.activeElement.id === 'v2' || document.activeElement.id === 'v3') {
+                    document.getElementById('kvlBtn').click();
+                }
+            }
+        });
+    </script>
 </body>
 </html>
