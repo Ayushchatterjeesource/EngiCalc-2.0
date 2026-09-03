@@ -1,61 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Complex Number Calculator - EngiCalc 2.0</title>
-<style>
-*{box-sizing:border-box}body{font-family:Arial;background:#f5f7fb;margin:0;color:#172033}
-header{background:#111827;color:white;text-align:center;padding:18px}
-header img{width:50px;vertical-align:middle}header a{color:white;text-decoration:none}
-.container{max-width:700px;margin:25px auto;padding:15px}.card{background:white;padding:25px;border-radius:18px;box-shadow:0 5px 20px #0001}
-input,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
-button{background:#2563eb;color:white;border:0;font-weight:bold}.result{background:#eff6ff;padding:18px;margin-top:15px;border-radius:12px}
-</style>
+    <meta charset="UTF-8">
+    <title>Complex Numbers - EngiCalc 2.0</title>
+    <link rel="stylesheet" href="../style.css">
 </head>
 <body>
-<header><a href="../index.html"><img src="../engicalc2.0-logo.png"> <b>EngiCalc 2.0</b></a></header>
-<div class="container"><div class="card">
-<h2>Complex Number Calculator</h2>
-
-<input id="a" type="number" placeholder="Real part of A">
-<input id="b" type="number" placeholder="Imaginary part of A">
-
-<input id="c" type="number" placeholder="Real part of B">
-<input id="d" type="number" placeholder="Imaginary part of B">
-
-<button onclick="calculate()">Calculate</button>
-<div id="result"></div>
-</div></div>
-
-<script>
-function calculate(){
-let a=+document.getElementById("a").value,b=+document.getElementById("b").value;
-let c=+document.getElementById("c").value,d=+document.getElementById("d").value;
-
-let div=(c*c+d*d);
-let realDiv=(a*c+b*d)/div;
-let imagDiv=(b*c-a*d)/div;
-
-let magA=Math.sqrt(a*a+b*b);
-let magB=Math.sqrt(c*c+d*d);
-
-result.innerHTML=`<div class="result">
-<b>Addition:</b> ${a+c} + ${b+d}i
-
-<b>Subtraction:</b> ${a-c} + ${b-d}i
-
-<b>Multiplication:</b> ${a*c-b*d} + ${a*d+b*c}i
-
-<b>Division:</b> ${div===0?"Undefined":realDiv.toFixed(4)+" + "+imagDiv.toFixed(4)+"i"}
-
-<b>|A|:</b> ${magA.toFixed(4)}
-
-<b>|B|:</b> ${magB.toFixed(4)}
-
-<b>Argument of A:</b> ${Math.atan2(b,a)*180/Math.PI}°
-</div>`;
-}
-</script>
+    <header><div class="navbar"><a href="../index.html" style="text-decoration: none; color: var(--primary-blue);">← Back</a><span>Complex Numbers</span></div></header>
+    <div style="max-width: 500px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center;">
+        <h3>Complex Addition (a + bi)</h3>
+        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <input type="number" id="r1" placeholder="Real 1" style="width:50%; padding:10px;">
+            <input type="number" id="i1" placeholder="Imaginary 1" style="width:50%; padding:10px;">
+        </div>
+        <p>+</p>
+        <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <input type="number" id="r2" placeholder="Real 2" style="width:50%; padding:10px;">
+            <input type="number" id="i2" placeholder="Imaginary 2" style="width:50%; padding:10px;">
+        </div>
+        <button onclick="calcComplex()" style="width:100%; margin-top:20px; padding:15px; background:var(--primary-blue); color:white; border:none; border-radius:10px; cursor:pointer;">Add Complex Numbers</button>
+        <div id="compRes" style="font-size: 1.5rem; color: var(--primary-blue); margin-top: 20px;">Result: 0 + 0i</div>
+    </div>
+    <script>
+        function calcComplex() {
+            let r1 = parseFloat(document.getElementById('r1').value) || 0;
+            let i1 = parseFloat(document.getElementById('i1').value) || 0;
+            let r2 = parseFloat(document.getElementById('r2').value) || 0;
+            let i2 = parseFloat(document.getElementById('i2').value) || 0;
+            document.getElementById('compRes').innerText = `Result: ${r1+r2} + ${i1+i2}i`;
+        }
+    </script>
 </body>
 </html>
