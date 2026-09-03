@@ -18,6 +18,16 @@
             color: var(--text-white);
             margin-bottom: 18px;
             font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .tool-container h2 .badge {
+            font-size: 12px;
+            background: var(--accent-purple);
+            color: #fff;
+            padding: 2px 12px;
+            border-radius: 20px;
         }
         .input-group {
             margin-bottom: 15px;
@@ -81,6 +91,9 @@
             color: var(--text-secondary);
             font-weight: 400;
         }
+        .result-box .result-main {
+            font-size: 26px;
+        }
         .btn-calculate {
             background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
             color: #fff;
@@ -114,6 +127,7 @@
             background: var(--bg-card);
             border: 1px solid var(--border-color);
             transition: all 0.2s;
+            float: right;
         }
         .back-btn:hover {
             background: var(--accent-blue);
@@ -129,6 +143,48 @@
             text-align: center;
             margin-bottom: 4px;
         }
+        .clearfix::after {
+            content: "";
+            clear: both;
+            display: table;
+        }
+        /* Polar form display */
+        .polar-display {
+            margin-top: 10px;
+            padding: 10px;
+            background: var(--bg-card);
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .polar-display strong {
+            color: var(--accent-cyan);
+        }
+        .result-extra {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+            margin-top: 8px;
+        }
+        .result-extra .extra-item {
+            background: var(--bg-card);
+            padding: 6px 8px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            font-size: 13px;
+        }
+        .result-extra .extra-item .elabel {
+            color: var(--text-secondary);
+            font-size: 10px;
+            text-transform: uppercase;
+        }
+        .result-extra .extra-item .evalue {
+            color: var(--accent-cyan);
+            font-weight: 600;
+            font-size: 15px;
+        }
     </style>
 </head>
 <body>
@@ -142,10 +198,16 @@
             <button class="theme-toggle" id="themeToggle">🌙</button>
         </header>
 
-        <a href="../index.html" class="back-btn">← Back to Home</a>
+        <!-- Back to Home - Right Side -->
+        <div class="clearfix">
+            <a href="../index.html" class="back-btn">← Back to Home</a>
+        </div>
 
         <div class="tool-container">
-            <h2>i Complex Number Calculator</h2>
+            <h2>
+                i Complex Number Calculator
+                <span class="badge">Advanced</span>
+            </h2>
 
             <div class="input-group">
                 <label>Complex Number Z₁</label>
@@ -182,13 +244,17 @@
                     <option value="subtract">Subtraction (Z₁ - Z₂)</option>
                     <option value="multiply">Multiplication (Z₁ × Z₂)</option>
                     <option value="divide">Division (Z₁ ÷ Z₂)</option>
+                    <option value="conjugate1">Conjugate of Z₁</option>
+                    <option value="conjugate2">Conjugate of Z₂</option>
+                    <option value="modulus1">Modulus of Z₁</option>
+                    <option value="modulus2">Modulus of Z₂</option>
                 </select>
             </div>
 
             <button class="btn-calculate" id="calculateBtn">Calculate</button>
 
             <div class="result-box" id="resultDisplay">
-                Result
+                <div class="result-main">Result</div>
                 <span class="sub-result">Enter values and click Calculate</span>
             </div>
         </div>
@@ -216,23 +282,61 @@
             const b2 = parseFloat(document.getElementById('b2').value) || 0;
 
             const operation = document.getElementById('operation').value;
-            let real, imag, label;
+            let real, imag, label, extra = '';
+
+            // Helper: format complex number
+            function formatComplex(r, i) {
+                if (i === 0) return r.toFixed(4);
+                if (r === 0) return i.toFixed(4) + 'i';
+                return `${r.toFixed(4)} ${i >= 0 ? '+' : '-'} ${Math.abs(i).toFixed(4)}i`;
+            }
+
+            // Helper: modulus
+            function modulus(r, i) {
+                return Math.sqrt(r*r + i*i);
+            }
+
+            // Helper: argument (angle in degrees)
+            function argument(r, i) {
+                return Math.atan2(i, r) * 180 / Math.PI;
+            }
 
             switch(operation) {
                 case 'add':
                     real = a1 + a2;
                     imag = b1 + b2;
                     label = 'Z₁ + Z₂ =';
+                    extra = `
+                        <div class="result-extra">
+                            <div class="extra-item"><span class="elabel">Modulus</span><div class="evalue">${modulus(real, imag).toFixed(4)}</div></div>
+                            <div class="extra-item"><span class="elabel">Argument</span><div class="evalue">${argument(real, imag).toFixed(2)}°</div></div>
+                            <div class="extra-item"><span class="elabel">Polar Form</span><div class="evalue">${modulus(real, imag).toFixed(2)} ∠ ${argument(real, imag).toFixed(2)}°</div></div>
+                        </div>
+                    `;
                     break;
                 case 'subtract':
                     real = a1 - a2;
                     imag = b1 - b2;
                     label = 'Z₁ - Z₂ =';
+                    extra = `
+                        <div class="result-extra">
+                            <div class="extra-item"><span class="elabel">Modulus</span><div class="evalue">${modulus(real, imag).toFixed(4)}</div></div>
+                            <div class="extra-item"><span class="elabel">Argument</span><div class="evalue">${argument(real, imag).toFixed(2)}°</div></div>
+                            <div class="extra-item"><span class="elabel">Polar Form</span><div class="evalue">${modulus(real, imag).toFixed(2)} ∠ ${argument(real, imag).toFixed(2)}°</div></div>
+                        </div>
+                    `;
                     break;
                 case 'multiply':
                     real = a1*a2 - b1*b2;
                     imag = a1*b2 + b1*a2;
                     label = 'Z₁ × Z₂ =';
+                    extra = `
+                        <div class="result-extra">
+                            <div class="extra-item"><span class="elabel">Modulus</span><div class="evalue">${modulus(real, imag).toFixed(4)}</div></div>
+                            <div class="extra-item"><span class="elabel">Argument</span><div class="evalue">${argument(real, imag).toFixed(2)}°</div></div>
+                            <div class="extra-item"><span class="elabel">Polar Form</span><div class="evalue">${modulus(real, imag).toFixed(2)} ∠ ${argument(real, imag).toFixed(2)}°</div></div>
+                        </div>
+                    `;
                     break;
                 case 'divide':
                     const denom = a2*a2 + b2*b2;
@@ -243,12 +347,72 @@
                     real = (a1*a2 + b1*b2) / denom;
                     imag = (b1*a2 - a1*b2) / denom;
                     label = 'Z₁ ÷ Z₂ =';
+                    extra = `
+                        <div class="result-extra">
+                            <div class="extra-item"><span class="elabel">Modulus</span><div class="evalue">${modulus(real, imag).toFixed(4)}</div></div>
+                            <div class="extra-item"><span class="elabel">Argument</span><div class="evalue">${argument(real, imag).toFixed(2)}°</div></div>
+                            <div class="extra-item"><span class="elabel">Polar Form</span><div class="evalue">${modulus(real, imag).toFixed(2)} ∠ ${argument(real, imag).toFixed(2)}°</div></div>
+                        </div>
+                    `;
                     break;
+                case 'conjugate1':
+                    real = a1;
+                    imag = -b1;
+                    label = 'Conjugate of Z₁ =';
+                    extra = `
+                        <div class="result-extra">
+                            <div class="extra-item"><span class="elabel">Modulus</span><div class="evalue">${modulus(real, imag).toFixed(4)}</div></div>
+                            <div class="extra-item"><span class="elabel">Argument</span><div class="evalue">${argument(real, imag).toFixed(2)}°</div></div>
+                            <div class="extra-item"><span class="elabel">Z₁ × Z̄₁</span><div class="evalue">${(a1*a1 + b1*b1).toFixed(4)}</div></div>
+                        </div>
+                    `;
+                    break;
+                case 'conjugate2':
+                    real = a2;
+                    imag = -b2;
+                    label = 'Conjugate of Z₂ =';
+                    extra = `
+                        <div class="result-extra">
+                            <div class="extra-item"><span class="elabel">Modulus</span><div class="evalue">${modulus(real, imag).toFixed(4)}</div></div>
+                            <div class="extra-item"><span class="elabel">Argument</span><div class="evalue">${argument(real, imag).toFixed(2)}°</div></div>
+                            <div class="extra-item"><span class="elabel">Z₂ × Z̄₂</span><div class="evalue">${(a2*a2 + b2*b2).toFixed(4)}</div></div>
+                        </div>
+                    `;
+                    break;
+                case 'modulus1':
+                    const mod1 = modulus(a1, b1);
+                    document.getElementById('resultDisplay').innerHTML = `
+                        <div class="result-main">|Z₁| = ${mod1.toFixed(4)}</div>
+                        <div class="result-extra">
+                            <div class="extra-item"><span class="elabel">Z₁</span><div class="evalue">${formatComplex(a1, b1)}</div></div>
+                            <div class="extra-item"><span class="elabel">Argument</span><div class="evalue">${argument(a1, b1).toFixed(2)}°</div></div>
+                            <div class="extra-item"><span class="elabel">Polar Form</span><div class="evalue">${mod1.toFixed(2)} ∠ ${argument(a1, b1).toFixed(2)}°</div></div>
+                        </div>
+                        <span class="sub-result">Modulus of Z₁</span>
+                    `;
+                    return;
+                case 'modulus2':
+                    const mod2 = modulus(a2, b2);
+                    document.getElementById('resultDisplay').innerHTML = `
+                        <div class="result-main">|Z₂| = ${mod2.toFixed(4)}</div>
+                        <div class="result-extra">
+                            <div class="extra-item"><span class="elabel">Z₂</span><div class="evalue">${formatComplex(a2, b2)}</div></div>
+                            <div class="extra-item"><span class="elabel">Argument</span><div class="evalue">${argument(a2, b2).toFixed(2)}°</div></div>
+                            <div class="extra-item"><span class="elabel">Polar Form</span><div class="evalue">${mod2.toFixed(2)} ∠ ${argument(a2, b2).toFixed(2)}°</div></div>
+                        </div>
+                        <span class="sub-result">Modulus of Z₂</span>
+                    `;
+                    return;
+                default:
+                    real = a1;
+                    imag = b1;
+                    label = 'Z₁ =';
             }
 
-            const resultStr = `${real.toFixed(4)} ${imag >= 0 ? '+' : '-'} ${Math.abs(imag).toFixed(4)}i`;
+            const resultStr = formatComplex(real, imag);
             document.getElementById('resultDisplay').innerHTML = `
-                ${label} ${resultStr}
+                <div class="result-main">${label} ${resultStr}</div>
+                ${extra}
                 <span class="sub-result">Operation: ${document.getElementById('operation').selectedOptions[0].text}</span>
             `;
         });
@@ -258,6 +422,9 @@
                 document.getElementById('calculateBtn').click();
             }
         });
+
+        // Initial calculation
+        document.getElementById('calculateBtn').click();
     </script>
 </body>
 </html>
