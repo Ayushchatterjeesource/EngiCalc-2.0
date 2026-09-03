@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>EngiCalc 2.0</title>
     
     <!-- ===== PWA META TAGS ===== -->
@@ -11,6 +11,7 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="EngiCalc">
+    <meta name="mobile-web-app-capable" content="yes">
     <link rel="apple-touch-icon" href="icon-192.png">
     
     <link rel="stylesheet" href="style.css">
@@ -157,20 +158,25 @@
 
     <script src="script.js"></script>
     <script>
-        // ===== FULL SCREEN =====
+        // ============================================================
+        // ===== FULL SCREEN (পুরো ডিভাইস) =====
+        // ============================================================
         const fullscreenBtn = document.getElementById('fullscreenBtn');
-        const calcCard = document.getElementById('calcCard');
 
         fullscreenBtn.addEventListener('click', function() {
+            const el = document.documentElement;
+            
             if (!document.fullscreenElement) {
-                if (calcCard.requestFullscreen) {
-                    calcCard.requestFullscreen();
-                } else if (calcCard.webkitRequestFullscreen) {
-                    calcCard.webkitRequestFullscreen();
-                } else if (calcCard.msRequestFullscreen) {
-                    calcCard.msRequestFullscreen();
+                if (el.requestFullscreen) {
+                    el.requestFullscreen();
+                } else if (el.webkitRequestFullscreen) {
+                    el.webkitRequestFullscreen();
+                } else if (el.msRequestFullscreen) {
+                    el.msRequestFullscreen();
                 }
+                fullscreenBtn.textContent = '⛶';
                 fullscreenBtn.style.background = '#22d3ee';
+                fullscreenBtn.style.color = '#000';
             } else {
                 if (document.exitFullscreen) {
                     document.exitFullscreen();
@@ -179,17 +185,23 @@
                 } else if (document.msExitFullscreen) {
                     document.msExitFullscreen();
                 }
+                fullscreenBtn.textContent = '⛶';
                 fullscreenBtn.style.background = '';
+                fullscreenBtn.style.color = '';
             }
         });
 
         document.addEventListener('fullscreenchange', function() {
             if (!document.fullscreenElement) {
+                fullscreenBtn.textContent = '⛶';
                 fullscreenBtn.style.background = '';
+                fullscreenBtn.style.color = '';
             }
         });
 
+        // ============================================================
         // ===== HISTORY SIDEBAR =====
+        // ============================================================
         const historySidebar = document.getElementById('historySidebar');
         const historyOverlay = document.getElementById('historyOverlay');
         const historyToggleBtn = document.getElementById('historyToggle');
@@ -211,7 +223,9 @@
         historyCloseBtn.addEventListener('click', closeHistory);
         historyOverlay.addEventListener('click', closeHistory);
 
+        // ============================================================
         // ===== CALCULATOR LOGIC =====
+        // ============================================================
         const displayExpr = document.getElementById('expression');
         const displayResult = document.getElementById('result');
         const clearHistoryBtn = document.getElementById('clearHistoryBtn');
@@ -334,9 +348,9 @@
         updateDisplay();
         updateHistoryUI();
 
-        // =============================================
-        // ===== SERVICE WORKER REGISTER (PWA) =====
-        // =============================================
+        // ============================================================
+        // ===== SERVICE WORKER (PWA) =====
+        // ============================================================
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
                 navigator.serviceWorker.register('/EngiCalc-2.0/sw.js')
