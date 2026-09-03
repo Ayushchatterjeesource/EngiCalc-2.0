@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EngiCalc 2.0</title>
+    
+    <!-- ===== PWA META TAGS ===== -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0a0e17">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="EngiCalc">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -116,7 +125,7 @@
             </div>
         </div>
 
-        <!-- ===== FOOTER WITH LOGO ===== -->
+        <!-- ===== FOOTER ===== -->
         <footer class="footer">
             <div class="footer-content">
                 <div class="footer-logo-area">
@@ -324,6 +333,21 @@
 
         updateDisplay();
         updateHistoryUI();
+
+        // =============================================
+        // ===== SERVICE WORKER REGISTER (PWA) =====
+        // =============================================
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/EngiCalc-2.0/sw.js')
+                    .then(function(registration) {
+                        console.log('✅ Service Worker registered successfully!');
+                    })
+                    .catch(function(error) {
+                        console.log('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
     </script>
 </body>
 </html>
