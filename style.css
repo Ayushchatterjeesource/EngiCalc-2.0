@@ -38,10 +38,11 @@
     transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
-body {
+html, body {
+    width: 100%;
+    min-height: 100vh;
     background: var(--bg-primary);
     color: var(--text-primary);
-    min-height: 100vh;
     padding: 12px;
     display: flex;
     justify-content: center;
@@ -114,33 +115,6 @@ body {
     margin-bottom: 20px;
 }
 
-.calc-card:fullscreen {
-    max-width: 100%;
-    width: 100%;
-    height: 100vh;
-    border-radius: 0;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    background: var(--bg-primary);
-}
-.calc-card:fullscreen .btn-grid {
-    max-width: 500px;
-    margin: 0 auto;
-    width: 100%;
-}
-.calc-card:fullscreen .display {
-    max-width: 500px;
-    margin: 0 auto 14px auto;
-    width: 100%;
-}
-.calc-card:fullscreen .calc-title {
-    max-width: 500px;
-    margin: 0 auto 10px auto;
-    width: 100%;
-}
-
 .calc-title {
     font-size: 14px;
     font-weight: 600;
@@ -158,7 +132,6 @@ body {
     border-radius: 20px;
 }
 
-/* ===== HISTORY BUTTON ===== */
 .btn-history-icon {
     background: var(--bg-card);
     border: 1px solid var(--border-color);
@@ -315,9 +288,8 @@ body {
 }
 
 /* ================================================================ */
-/* ===== FOOTER WITH LOGO ===== */
+/* ===== FOOTER ===== */
 /* ================================================================ */
-
 .footer {
     margin-top: 24px;
     padding: 20px 16px 16px 16px;
@@ -375,7 +347,6 @@ body {
 /* ================================================================ */
 /* ===== HISTORY SIDEBAR ===== */
 /* ================================================================ */
-
 .history-overlay {
     position: fixed;
     top: 0;
@@ -508,6 +479,125 @@ body {
 }
 .btn-clear-history:active {
     transform: scale(0.96);
+}
+
+/* ================================================================ */
+/* ===== FULL SCREEN (পুরো ডিভাইস) ===== */
+/* ================================================================ */
+html:fullscreen,
+body:fullscreen {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    background: var(--bg-primary) !important;
+}
+
+html:-webkit-full-screen,
+body:-webkit-full-screen {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    background: var(--bg-primary) !important;
+}
+
+html:-moz-full-screen,
+body:-moz-full-screen {
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+    background: var(--bg-primary) !important;
+}
+
+:fullscreen .calc-card,
+:-webkit-full-screen .calc-card,
+:-moz-full-screen .calc-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 100vh !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
+    padding: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    background: var(--bg-primary) !important;
+    margin: 0 !important;
+    border: none !important;
+}
+
+:fullscreen .btn-grid,
+:-webkit-full-screen .btn-grid,
+:-moz-full-screen .btn-grid {
+    max-width: 500px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+    gap: 10px !important;
+}
+
+:fullscreen .display,
+:-webkit-full-screen .display,
+:-moz-full-screen .display {
+    max-width: 500px !important;
+    margin: 0 auto 16px auto !important;
+    width: 100% !important;
+    min-height: 120px !important;
+}
+
+:fullscreen .calc-title,
+:-webkit-full-screen .calc-title,
+:-moz-full-screen .calc-title {
+    max-width: 500px !important;
+    margin: 0 auto 12px auto !important;
+    width: 100% !important;
+}
+
+:fullscreen .btn,
+:-webkit-full-screen .btn,
+:-moz-full-screen .btn {
+    padding: 18px 0 !important;
+    font-size: 20px !important;
+}
+
+:fullscreen .btn-function,
+:-webkit-full-screen .btn-function,
+:-moz-full-screen .btn-function {
+    font-size: 15px !important;
+}
+
+:fullscreen .display .result,
+:-webkit-full-screen .display .result,
+:-moz-full-screen .display .result {
+    font-size: 40px !important;
+}
+
+:fullscreen .header,
+:-webkit-full-screen .header,
+:-moz-full-screen .header {
+    display: none !important;
+}
+
+:fullscreen .footer,
+:-webkit-full-screen .footer,
+:-moz-full-screen .footer {
+    display: none !important;
+}
+
+:fullscreen .tools-section,
+:-webkit-full-screen .tools-section,
+:-moz-full-screen .tools-section {
+    display: none !important;
+}
+
+:fullscreen .history-sidebar,
+:-webkit-full-screen .history-sidebar,
+:-moz-full-screen .history-sidebar {
+    z-index: 9999 !important;
+}
+
+:fullscreen .history-overlay,
+:-webkit-full-screen .history-overlay,
+:-moz-full-screen .history-overlay {
+    z-index: 9998 !important;
 }
 
 /* ===== SCROLLBAR ===== */
