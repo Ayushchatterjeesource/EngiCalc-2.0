@@ -2,51 +2,297 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Projectile Motion - EngiCalc 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Unit Converter - EngiCalc 2.0</title>
     <link rel="stylesheet" href="../style.css">
     <style>
-        .input-group { margin: 15px 0; text-align: left; }
-        input { width: 100%; padding: 12px; margin-top: 5px; border-radius: 8px; border: 1px solid #ccc; background: var(--bg-color); color: var(--text-color); }
-        .calc-container { max-width: 500px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; box-shadow: var(--shadow); }
-        .res-list { margin-top: 20px; padding: 15px; background: var(--bg-color); border-radius: 10px; text-align: left; }
+        .tool-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tool-container h2 {
+            color: var(--text-white);
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .result-box {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 22px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .result-box .sub-result {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-calculate:active {
+            transform: scale(0.97);
+        }
+        .btn-calculate:hover {
+            opacity: 0.9;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+        .conversion-info {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 8px;
+        }
     </style>
 </head>
 <body>
-    <header><div class="navbar"><a href="../index.html" style="text-decoration: none; color: var(--primary-blue);">← Back</a><span>Projectile Motion</span></div></header>
-    <div class="calc-container">
-        <h3>Projectile Calculator</h3>
-        <div class="input-group">
-            <label>Initial Velocity (m/s)</label>
-            <input type="number" id="velocity" placeholder="e.g. 20">
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="logo-img" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                <span class="logo-text">Engi<span>Calc</span> 2.0</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
+
+        <a href="../index.html" class="back-btn">← Back to Home</a>
+
+        <div class="tool-container">
+            <h2>⇄ Unit Converter</h2>
+
+            <div class="input-group">
+                <label>Category</label>
+                <select id="category">
+                    <option value="length">Length</option>
+                    <option value="mass">Mass / Weight</option>
+                    <option value="temperature">Temperature</option>
+                    <option value="area">Area</option>
+                    <option value="volume">Volume</option>
+                    <option value="speed">Speed</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label>Value</label>
+                <input type="number" id="value" value="1" step="any">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div class="input-group">
+                    <label>From</label>
+                    <select id="fromUnit"></select>
+                </div>
+                <div class="input-group">
+                    <label>To</label>
+                    <select id="toUnit"></select>
+                </div>
+            </div>
+
+            <button class="btn-calculate" id="calculateBtn">Convert</button>
+
+            <div class="result-box" id="resultDisplay">
+                Result
+                <span class="sub-result">Select category and enter value</span>
+            </div>
         </div>
-        <div class="input-group">
-            <label>Launch Angle (degrees)</label>
-            <input type="number" id="angle" placeholder="e.g. 45">
-        </div>
-        <button onclick="calcProj()" style="width:100%; padding:15px; background:var(--primary-blue); color:white; border:none; border-radius:10px; cursor:pointer;">Calculate</button>
-        <div class="res-list" id="projRes">
-            <p>Max Height: -</p>
-            <p>Total Range: -</p>
-            <p>Time of Flight: -</p>
-        </div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="footer-logo-img" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22%3E%3Crect width=%2236%22 height=%2236%22 rx=%228%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                    <span class="footer-logo-text">Engi<span>Calc</span> 2.0</span>
+                </div>
+                <p class="footer-text">This EngiCalc is made by <strong>AyushChatterjee</strong></p>
+                <p class="footer-text">Founder: <strong>EngiCalc2.0.com</strong></p>
+                <p class="footer-copy">© 2026 EngiCalc 2.0. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
+
+    <script src="../script.js"></script>
     <script>
-        function calcProj() {
-            let v = parseFloat(document.getElementById('velocity').value);
-            let a = parseFloat(document.getElementById('angle').value);
-            let g = 9.81;
-            let rad = a * (Math.PI / 180);
+        // ===== CONVERSION DATA =====
+        const conversions = {
+            length: {
+                units: ['Meter', 'Kilometer', 'Centimeter', 'Millimeter', 'Mile', 'Yard', 'Foot', 'Inch'],
+                toBase: [1, 1000, 0.01, 0.001, 1609.344, 0.9144, 0.3048, 0.0254]
+            },
+            mass: {
+                units: ['Kilogram', 'Gram', 'Milligram', 'Pound', 'Ounce', 'Ton'],
+                toBase: [1, 0.001, 0.000001, 0.453592, 0.0283495, 1000]
+            },
+            temperature: {
+                units: ['Celsius', 'Fahrenheit', 'Kelvin'],
+                toBase: null // special handling
+            },
+            area: {
+                units: ['Square Meter', 'Square Kilometer', 'Square Centimeter', 'Square Mile', 'Square Yard', 'Square Foot', 'Square Inch', 'Hectare', 'Acre'],
+                toBase: [1, 1000000, 0.0001, 2589988.11, 0.836127, 0.092903, 0.00064516, 10000, 4046.86]
+            },
+            volume: {
+                units: ['Cubic Meter', 'Liter', 'Milliliter', 'Gallon (US)', 'Cubic Foot', 'Cubic Inch'],
+                toBase: [1, 0.001, 0.000001, 0.00378541, 0.0283168, 0.0000163871]
+            },
+            speed: {
+                units: ['Meter/Second', 'Kilometer/Hour', 'Mile/Hour', 'Knot', 'Foot/Second'],
+                toBase: [1, 0.277778, 0.44704, 0.514444, 0.3048]
+            }
+        };
 
-            let height = (Math.pow(v, 2) * Math.pow(Math.sin(rad), 2)) / (2 * g);
-            let range = (Math.pow(v, 2) * Math.sin(2 * rad)) / g;
-            let time = (2 * v * Math.sin(rad)) / g;
+        // ===== POPULATE UNITS =====
+        const categorySelect = document.getElementById('category');
+        const fromUnitSelect = document.getElementById('fromUnit');
+        const toUnitSelect = document.getElementById('toUnit');
 
-            document.getElementById('projRes').innerHTML = `
-                <p>Max Height: <b>${height.toFixed(2)} m</b></p>
-                <p>Total Range: <b>${range.toFixed(2)} m</b></p>
-                <p>Time of Flight: <b>${time.toFixed(2)} s</b></p>
-            `;
+        function populateUnits() {
+            const category = categorySelect.value;
+            const data = conversions[category];
+            if (!data) return;
+
+            fromUnitSelect.innerHTML = '';
+            toUnitSelect.innerHTML = '';
+
+            data.units.forEach(unit => {
+                const opt1 = document.createElement('option');
+                opt1.value = unit;
+                opt1.textContent = unit;
+                fromUnitSelect.appendChild(opt1);
+
+                const opt2 = document.createElement('option');
+                opt2.value = unit;
+                opt2.textContent = unit;
+                toUnitSelect.appendChild(opt2);
+            });
+
+            // Set defaults
+            if (data.units.length >= 2) {
+                fromUnitSelect.value = data.units[0];
+                toUnitSelect.value = data.units[1];
+            }
         }
+
+        categorySelect.addEventListener('change', populateUnits);
+        populateUnits();
+
+        // ===== CONVERT FUNCTION =====
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const category = categorySelect.value;
+            const value = parseFloat(document.getElementById('value').value);
+            const fromUnit = fromUnitSelect.value;
+            const toUnit = toUnitSelect.value;
+
+            if (isNaN(value)) {
+                document.getElementById('resultDisplay').innerHTML = '⚠️ Please enter a valid number';
+                return;
+            }
+
+            const data = conversions[category];
+            let result;
+
+            if (category === 'temperature') {
+                result = convertTemperature(value, fromUnit, toUnit);
+            } else {
+                const fromIndex = data.units.indexOf(fromUnit);
+                const toIndex = data.units.indexOf(toUnit);
+                const baseValue = value * data.toBase[fromIndex];
+                result = baseValue / data.toBase[toIndex];
+            }
+
+            document.getElementById('resultDisplay').innerHTML = `
+                ${result.toFixed(6)}
+                <span class="sub-result">${value} ${fromUnit} = ${result.toFixed(6)} ${toUnit}</span>
+            `;
+        });
+
+        function convertTemperature(value, from, to) {
+            let celsius;
+            // Convert to Celsius first
+            if (from === 'Celsius') celsius = value;
+            else if (from === 'Fahrenheit') celsius = (value - 32) * 5/9;
+            else if (from === 'Kelvin') celsius = value - 273.15;
+
+            // Convert from Celsius to target
+            if (to === 'Celsius') return celsius;
+            else if (to === 'Fahrenheit') return celsius * 9/5 + 32;
+            else if (to === 'Kelvin') return celsius + 273.15;
+            return value;
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('calculateBtn').click();
+            }
+        });
     </script>
 </body>
 </html>
