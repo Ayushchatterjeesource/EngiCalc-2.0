@@ -1,72 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Unit Converter - EngiCalc 2.0</title>
-<style>
-*{box-sizing:border-box}body{font-family:Arial;background:#f5f7fb;margin:0;color:#172033}
-header{background:#111827;color:white;text-align:center;padding:18px}header a{color:white;text-decoration:none}
-header img{width:50px;vertical-align:middle}
-.container{max-width:700px;margin:25px auto;padding:15px}.card{background:white;padding:25px;border-radius:18px;box-shadow:0 5px 20px #0001}
-input,select,button{width:100%;padding:13px;margin:7px 0;border-radius:10px;border:1px solid #ddd;font-size:16px}
-button{background:#2563eb;color:white;border:0;font-weight:bold}.result{background:#eff6ff;padding:18px;margin-top:15px;border-radius:12px;font-size:20px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter - EngiCalc 2.0</title>
+    <link rel="stylesheet" href="../style.css">
+    <style>
+        .calc-container { max-width: 500px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center; }
+        select, input { width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ddd; background: var(--bg-color); color: var(--text-color); }
+        .result { font-size: 1.8rem; color: var(--primary-blue); margin-top: 20px; font-weight: bold; }
+    </style>
 </head>
 <body>
-<header><a href="../index.html"><img src="../engicalc2.0-logo.png"> <b>EngiCalc 2.0</b></a></header>
+    <header><div class="navbar"><a href="../index.html" class="back-btn">← Back</a><span>Unit Converter</span></div></header>
 
-<div class="container"><div class="card">
-<h2>Engineering Unit Converter</h2>
+    <div class="calc-container">
+        <h3>Length Converter</h3>
+        <input type="number" id="inputValue" placeholder="Enter Value" oninput="convert()">
+        <select id="fromUnit" onchange="convert()">
+            <option value="m">Meter (m)</option>
+            <option value="km">Kilometer (km)</option>
+            <option value="feet">Feet</option>
+            <option value="inch">Inch</option>
+        </select>
+        <p>to</p>
+        <select id="toUnit" onchange="convert()">
+            <option value="m">Meter (m)</option>
+            <option value="km">Kilometer (km)</option>
+            <option value="feet">Feet</option>
+            <option value="inch">Inch</option>
+        </select>
+        <div class="result" id="unitResult">0</div>
+    </div>
 
-<input id="value" type="number" placeholder="Enter value">
-
-<select id="type">
-<option value="m-km">Meter → Kilometer</option>
-<option value="km-m">Kilometer → Meter</option>
-<option value="cm-m">Centimeter → Meter</option>
-<option value="m-cm">Meter → Centimeter</option>
-<option value="mm-m">Millimeter → Meter</option>
-<option value="m-mm">Meter → Millimeter</option>
-<option value="n-kn">Newton → Kilonewton</option>
-<option value="kn-n">Kilonewton → Newton</option>
-<option value="pa-kpa">Pascal → Kilopascal</option>
-<option value="kpa-pa">Kilopascal → Pascal</option>
-<option value="w-kw">Watt → Kilowatt</option>
-<option value="kw-w">Kilowatt → Watt</option>
-<option value="c-f">Celsius → Fahrenheit</option>
-<option value="f-c">Fahrenheit → Celsius</option>
-</select>
-
-<button onclick="convert()">Convert</button>
-<div id="result"></div>
-</div></div>
-
-<script>
-function convert(){
-let v=+document.getElementById("value").value;
-let t=document.getElementById("type").value;
-let r;
-
-switch(t){
-case"m-km":r=v/1000;break;
-case"km-m":r=v*1000;break;
-case"cm-m":r=v/100;break;
-case"m-cm":r=v*100;break;
-case"mm-m":r=v/1000;break;
-case"m-mm":r=v*1000;break;
-case"n-kn":r=v/1000;break;
-case"kn-n":r=v*1000;break;
-case"pa-kpa":r=v/1000;break;
-case"kpa-pa":r=v*1000;break;
-case"w-kw":r=v/1000;break;
-case"kw-w":r=v*1000;break;
-case"c-f":r=v*9/5+32;break;
-case"f-c":r=(v-32)*5/9;break;
-}
-
-result.innerHTML=`<div class="result"><b>Result:</b> ${r.toFixed(6)}</div>`;
-}
-</script>
+    <script>
+        function convert() {
+            let val = document.getElementById('inputValue').value;
+            let from = document.getElementById('fromUnit').value;
+            let to = document.getElementById('toUnit').value;
+            
+            // Basic Meter Conversion Table
+            let factors = { m: 1, km: 1000, feet: 0.3048, inch: 0.0254 };
+            let result = (val * factors[from]) / factors[to];
+            document.getElementById('unitResult').innerHTML = result.toFixed(4);
+        }
+    </script>
 </body>
 </html>
