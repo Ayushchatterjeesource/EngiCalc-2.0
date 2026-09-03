@@ -2,33 +2,262 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Complex Numbers - EngiCalc 2.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Complex Number Calculator - EngiCalc 2.0</title>
     <link rel="stylesheet" href="../style.css">
+    <style>
+        .tool-container {
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+        .tool-container h2 {
+            color: var(--text-white);
+            margin-bottom: 18px;
+            font-size: 20px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .input-group input, .input-group select {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .complex-inputs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+        }
+        .complex-inputs input {
+            width: 100%;
+            padding: 10px;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border-color);
+            background: var(--bg-input);
+            color: var(--text-white);
+            font-size: 16px;
+            text-align: center;
+        }
+        .complex-inputs input:focus {
+            outline: 2px solid var(--accent-blue);
+        }
+        .result-box {
+            background: var(--bg-input);
+            border-radius: var(--radius-sm);
+            padding: 16px;
+            margin-top: 15px;
+            border: 1px solid var(--border-color);
+            text-align: center;
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--accent-cyan);
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .result-box .sub-result {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .btn-calculate {
+            background: linear-gradient(135deg, var(--accent-blue), var(--accent-cyan));
+            color: #fff;
+            border: none;
+            padding: 14px 30px;
+            border-radius: var(--radius-sm);
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 5px;
+            transition: opacity 0.2s;
+        }
+        .btn-calculate:active {
+            transform: scale(0.97);
+        }
+        .btn-calculate:hover {
+            opacity: 0.9;
+        }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+            color: var(--accent-cyan);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: var(--radius-sm);
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.2s;
+        }
+        .back-btn:hover {
+            background: var(--accent-blue);
+            color: #fff;
+            border-color: var(--accent-blue);
+        }
+        .back-btn:active {
+            transform: scale(0.95);
+        }
+        .complex-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-bottom: 4px;
+        }
+    </style>
 </head>
 <body>
-    <header><div class="navbar"><a href="../index.html" style="text-decoration: none; color: var(--primary-blue);">← Back</a><span>Complex Numbers</span></div></header>
-    <div style="max-width: 500px; margin: 50px auto; background: var(--card-bg); padding: 30px; border-radius: 20px; text-align: center;">
-        <h3>Complex Addition (a + bi)</h3>
-        <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-            <input type="number" id="r1" placeholder="Real 1" style="width:50%; padding:10px;">
-            <input type="number" id="i1" placeholder="Imaginary 1" style="width:50%; padding:10px;">
+    <div class="app-container">
+        <header class="header">
+            <div class="logo-area">
+                <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="logo-img" 
+                     onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2240%22 height=%2240%22%3E%3Crect width=%2240%22 height=%2240%22 rx=%2210%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2220%22 y=%2228%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2220%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                <span class="logo-text">Engi<span>Calc</span> 2.0</span>
+            </div>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
+
+        <a href="../index.html" class="back-btn">← Back to Home</a>
+
+        <div class="tool-container">
+            <h2>i Complex Number Calculator</h2>
+
+            <div class="input-group">
+                <label>Complex Number Z₁</label>
+                <div class="complex-inputs">
+                    <div>
+                        <div class="complex-label">Real (a)</div>
+                        <input type="number" id="a1" value="3" step="any">
+                    </div>
+                    <div>
+                        <div class="complex-label">Imaginary (b)</div>
+                        <input type="number" id="b1" value="4" step="any">
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Complex Number Z₂</label>
+                <div class="complex-inputs">
+                    <div>
+                        <div class="complex-label">Real (c)</div>
+                        <input type="number" id="a2" value="1" step="any">
+                    </div>
+                    <div>
+                        <div class="complex-label">Imaginary (d)</div>
+                        <input type="number" id="b2" value="2" step="any">
+                    </div>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label>Operation</label>
+                <select id="operation">
+                    <option value="add">Addition (Z₁ + Z₂)</option>
+                    <option value="subtract">Subtraction (Z₁ - Z₂)</option>
+                    <option value="multiply">Multiplication (Z₁ × Z₂)</option>
+                    <option value="divide">Division (Z₁ ÷ Z₂)</option>
+                </select>
+            </div>
+
+            <button class="btn-calculate" id="calculateBtn">Calculate</button>
+
+            <div class="result-box" id="resultDisplay">
+                Result
+                <span class="sub-result">Enter values and click Calculate</span>
+            </div>
         </div>
-        <p>+</p>
-        <div style="display: flex; gap: 10px; margin-top: 10px;">
-            <input type="number" id="r2" placeholder="Real 2" style="width:50%; padding:10px;">
-            <input type="number" id="i2" placeholder="Imaginary 2" style="width:50%; padding:10px;">
-        </div>
-        <button onclick="calcComplex()" style="width:100%; margin-top:20px; padding:15px; background:var(--primary-blue); color:white; border:none; border-radius:10px; cursor:pointer;">Add Complex Numbers</button>
-        <div id="compRes" style="font-size: 1.5rem; color: var(--primary-blue); margin-top: 20px;">Result: 0 + 0i</div>
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-logo-area">
+                    <img src="../engicalc2.0-logo.png" alt="EngiCalc Logo" class="footer-logo-img" 
+                         onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2236%22 height=%2236%22%3E%3Crect width=%2236%22 height=%2236%22 rx=%228%22 fill=%22%233b82f6%22/%3E%3Ctext x=%2218%22 y=%2225%22 text-anchor=%22middle%22 fill=%22white%22 font-size=%2218%22 font-weight=%22bold%22%3E⚙%3C/text%3E%3C/svg%3E'">
+                    <span class="footer-logo-text">Engi<span>Calc</span> 2.0</span>
+                </div>
+                <p class="footer-text">This EngiCalc is made by <strong>AyushChatterjee</strong></p>
+                <p class="footer-text">Founder: <strong>EngiCalc2.0.com</strong></p>
+                <p class="footer-copy">© 2026 EngiCalc 2.0. All rights reserved.</p>
+            </div>
+        </footer>
     </div>
+
+    <script src="../script.js"></script>
     <script>
-        function calcComplex() {
-            let r1 = parseFloat(document.getElementById('r1').value) || 0;
-            let i1 = parseFloat(document.getElementById('i1').value) || 0;
-            let r2 = parseFloat(document.getElementById('r2').value) || 0;
-            let i2 = parseFloat(document.getElementById('i2').value) || 0;
-            document.getElementById('compRes').innerText = `Result: ${r1+r2} + ${i1+i2}i`;
-        }
+        document.getElementById('calculateBtn').addEventListener('click', function() {
+            const a1 = parseFloat(document.getElementById('a1').value) || 0;
+            const b1 = parseFloat(document.getElementById('b1').value) || 0;
+            const a2 = parseFloat(document.getElementById('a2').value) || 0;
+            const b2 = parseFloat(document.getElementById('b2').value) || 0;
+
+            const operation = document.getElementById('operation').value;
+            let real, imag, label;
+
+            switch(operation) {
+                case 'add':
+                    real = a1 + a2;
+                    imag = b1 + b2;
+                    label = 'Z₁ + Z₂ =';
+                    break;
+                case 'subtract':
+                    real = a1 - a2;
+                    imag = b1 - b2;
+                    label = 'Z₁ - Z₂ =';
+                    break;
+                case 'multiply':
+                    real = a1*a2 - b1*b2;
+                    imag = a1*b2 + b1*a2;
+                    label = 'Z₁ × Z₂ =';
+                    break;
+                case 'divide':
+                    const denom = a2*a2 + b2*b2;
+                    if (denom === 0) {
+                        document.getElementById('resultDisplay').innerHTML = '⚠️ Division by zero!';
+                        return;
+                    }
+                    real = (a1*a2 + b1*b2) / denom;
+                    imag = (b1*a2 - a1*b2) / denom;
+                    label = 'Z₁ ÷ Z₂ =';
+                    break;
+            }
+
+            const resultStr = `${real.toFixed(4)} ${imag >= 0 ? '+' : '-'} ${Math.abs(imag).toFixed(4)}i`;
+            document.getElementById('resultDisplay').innerHTML = `
+                ${label} ${resultStr}
+                <span class="sub-result">Operation: ${document.getElementById('operation').selectedOptions[0].text}</span>
+            `;
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('calculateBtn').click();
+            }
+        });
     </script>
 </body>
 </html>
