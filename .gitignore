@@ -1,0 +1,8 @@
+# Ignore large files
+*.psd
+*.ai
+*.mp4
+*.zip
+*.rar
+.DS_Store
+Thumbs.db
